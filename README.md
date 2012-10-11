@@ -1,2 +1,2 @@
-IPG-project
+PGR-project
 ===========

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Libs">
+      <UniqueIdentifier>{61515747-1988-448b-8aa5-029d79cea30d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fragment Shaders">
+      <UniqueIdentifier>{ce2e07bb-3033-4648-94ee-3e59daab107a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vertex Shaders">
+      <UniqueIdentifier>{6bf26a85-0eca-43fe-8fe8-5073956ea9c0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\tmp\lightmap.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\tmp\tiles.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\tmp\lab01_task.fs">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="..\tmp\lab02_01_osvetleni.fs">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="..\tmp\lab02_02_shadertex.fs">
+      <Filter>Fragment Shaders</Filter>
+    </None>
+    <None Include="..\tmp\lab01_task.vs">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="..\tmp\lab02_02_shadertex.vs">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="..\tmp\lab02_01_osvetleni.vs">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="..\..\lib\sdl\lib\SDL.dll">
+      <Filter>Libs</Filter>
+    </None>
+    <None Include="..\..\lib\glew\bin\glew32.dll">
+      <Filter>Libs</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\labs\pgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\labs\lab01_07_3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\labs\pgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
