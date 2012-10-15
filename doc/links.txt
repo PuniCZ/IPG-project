@@ -1,0 +1,5 @@
+http://www.gamedev.net/topic/626185-clouds-in-opengl/
+
+http://nis-ei.eng.hokudai.ac.jp/~doba/papers/sig00_cloud.pdf
+
+http://www.gamedev.net/page/resources/_/technical/game-programming/simple-clouds-part-1-r2085
