@@ -166,9 +166,7 @@ void onWindowRedraw()
 
     // Calculate MVP matrix
     glm::mat4 projection = glm::perspective(45.0f, (float)width/(float)height, 1.0f, 1000.0f);
-
-    printf("%f\n", pow(2, wheel));
-
+    
     glm::mat4 mv = glm::scale(
             glm::rotate(
                 glm::rotate(
