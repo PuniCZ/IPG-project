@@ -59,7 +59,7 @@
     <ClCompile Include="..\labs\pgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\labs\lab01_07_3D.cpp">
+    <ClCompile Include="..\labs\lab01_task.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
