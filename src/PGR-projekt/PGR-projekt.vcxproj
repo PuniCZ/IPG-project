@@ -102,7 +102,7 @@ copy $(ProjectDir)..\..\lib\sdl\lib\sdl.dll $(TargetDir)</Command>
     <None Include="..\tmp\tiles.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\labs\lab01_task.cpp" />
+    <ClCompile Include="..\lab1\lab01_task.cpp" />
     <ClCompile Include="..\labs\pgr.cpp" />
   </ItemGroup>
   <ItemGroup>

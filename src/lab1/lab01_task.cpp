@@ -81,7 +81,7 @@ struct Point {
 // House indices
 const unsigned char house[] = {
 // Walls
-     0,  1,  2,
+     0,  1,  2, //0
      0,  2,  3,
      4,  5,  6,
      4,  6,  7,
@@ -90,18 +90,20 @@ const unsigned char house[] = {
     12, 13, 14,
     12, 14, 15,
 // Roof
-    16, 17, 18,
+    16, 17, 18, //8
     19, 20, 21,
     22, 23, 24,
     25, 26, 27,
 // Grass floor
-    28, 29, 30,
+    28, 29, 30, //12
     29, 30, 31,
+
 // Window #1
-    32, 33, 34,
+    32, 33, 34, //14
     32, 34, 35,
+
 // Window #2
-    36, 37, 38,
+    36, 37, 38, //16
     36, 38, 39,
 
 };
@@ -156,6 +158,11 @@ void onInit()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(house), house, GL_STATIC_DRAW);
 }
 
+int nomalizeAngle(float angle)
+{
+    return int(angle)%360 < 0 ? int(angle)%360 + 360 : int(angle)%360;
+}
+
 void onWindowRedraw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -166,9 +173,7 @@ void onWindowRedraw()
 
     // Calculate MVP matrix
     glm::mat4 projection = glm::perspective(45.0f, (float)width/(float)height, 1.0f, 1000.0f);
-
-    printf("%f\n", pow(2, wheel));
-
+    
     glm::mat4 mv = glm::scale(
             glm::rotate(
                 glm::rotate(
@@ -193,15 +198,31 @@ void onWindowRedraw()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glEnable(GL_BLEND); 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
+    
     glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)offsetof(Point, position));
     glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)offsetof(Point, color));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
-    glDrawElements(GL_TRIANGLES, sizeof(house)/sizeof(*house), GL_UNSIGNED_BYTE, NULL);
+    glDrawElements(GL_TRIANGLES, sizeof(house)/sizeof(*house)-4*3, GL_UNSIGNED_BYTE, NULL);
 
+    //windows (flip draw order if looking from "other side")
+    bool flip = false;
+    flip = (nomalizeAngle(rx) < 90 || nomalizeAngle(rx) > 270);
+    if (!(nomalizeAngle(ry) < 90 || nomalizeAngle(ry) > 270))
+        flip=!flip;   
+    
+    if (flip)
+    {
+        glDrawElements(GL_TRIANGLES, 2*3, GL_UNSIGNED_BYTE, (void*)(14*3));
+        glDrawElements(GL_TRIANGLES, 2*3, GL_UNSIGNED_BYTE, (void*)(16*3));
+    }
+    else
+    {
+        glDrawElements(GL_TRIANGLES, 2*3, GL_UNSIGNED_BYTE, (void*)(16*3));
+        glDrawElements(GL_TRIANGLES, 2*3, GL_UNSIGNED_BYTE, (void*)(14*3));
+    }
+    
     glDisable(GL_BLEND);
 
     SDL_GL_SwapBuffers();

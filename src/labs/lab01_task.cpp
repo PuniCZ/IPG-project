@@ -5,7 +5,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
-const float M_PI = 3.141592654f;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -14,73 +13,50 @@ const float M_PI = 3.141592654f;
 ////////////////////////////////////////////////////////////////////////////////
 
 struct Point {
-    float color[4];
+    float color[3];
     float position[3];
 } const houseVertices[] = {
-    
     // Walls
-    { { 0.0f, 0.0f, 1.0f, 1.0f }, { -5.0f, -5.0f, -5.0f } },
-    { { 0.0f, 1.0f, 0.0f, 1.0f }, { -5.0f, -5.0f,  5.0f } },
-    { { 0.0f, 1.0f, 1.0f, 1.0f }, {  5.0f, -5.0f,  5.0f } },
-    { { 1.0f, 0.0f, 0.0f, 1.0f }, {  5.0f, -5.0f, -5.0f } },
-
-    { { 1.0f, 0.0f, 1.0f, 1.0f }, { -5.0f,  5.0f, -5.0f } },
-    { { 1.0f, 1.0f, 0.0f, 1.0f }, { -5.0f,  5.0f,  5.0f } },
-    { { 1.0f, 1.0f, 1.0f, 1.0f }, {  5.0f,  5.0f,  5.0f } },
-    { { 0.0f, 0.0f, 1.0f, 1.0f }, {  5.0f,  5.0f, -5.0f } },
+    { { 0.0, 0.0, 1.0 }, { -5.0, -5.0, -5.0 } },
+    { { 0.0, 1.0, 0.0 }, { -5.0, -5.0,  5.0 } },
+    { { 0.0, 1.0, 1.0 }, {  5.0, -5.0,  5.0 } },
+    { { 1.0, 0.0, 0.0 }, {  5.0, -5.0, -5.0 } },
         
-    { { 0.0f, 1.0f, 0.0f, 1.0f }, { -5.0f, -5.0f, -5.0f } },
-    { { 0.0f, 1.0f, 1.0f, 1.0f }, { -5.0f, -5.0f,  5.0f } },
-    { { 1.0f, 0.0f, 0.0f, 1.0f }, { -5.0f,  5.0f,  5.0f } },
-    { { 1.0f, 0.0f, 1.0f, 1.0f }, { -5.0f,  5.0f, -5.0f } },
+    { { 1.0, 0.0, 1.0 }, { -5.0,  5.0, -5.0 } },
+    { { 1.0, 1.0, 0.0 }, { -5.0,  5.0,  5.0 } },
+    { { 1.0, 1.0, 1.0 }, {  5.0,  5.0,  5.0 } },
+    { { 0.0, 0.0, 1.0 }, {  5.0,  5.0, -5.0 } },
         
-    { { 0.0f, 1.0f, 0.0f, 1.0f }, {  5.0f, -5.0f, -5.0f } },
-    { { 0.0f, 1.0f, 1.0f, 1.0f }, {  5.0f, -5.0f,  5.0f } },
-    { { 1.0f, 0.0f, 0.0f, 1.0f }, {  5.0f,  5.0f,  5.0f } },
-    { { 1.0f, 0.0f, 1.0f, 1.0f }, {  5.0f,  5.0f, -5.0f } },
-
+    { { 0.0, 1.0, 0.0 }, { -5.0, -5.0, -5.0 } },
+    { { 0.0, 1.0, 1.0 }, { -5.0, -5.0,  5.0 } },
+    { { 1.0, 0.0, 0.0 }, { -5.0,  5.0,  5.0 } },
+    { { 1.0, 0.0, 1.0 }, { -5.0,  5.0, -5.0 } },
+        
+    { { 0.0, 1.0, 0.0 }, {  5.0, -5.0, -5.0 } },
+    { { 0.0, 1.0, 1.0 }, {  5.0, -5.0,  5.0 } },
+    { { 1.0, 0.0, 0.0 }, {  5.0,  5.0,  5.0 } },
+    { { 1.0, 0.0, 1.0 }, {  5.0,  5.0, -5.0 } },
     // Roof
-    { { 0.0f, 0.0f, 1.0f, 1.0f }, { -5.0f,  5.0f, -5.0f } },
-    { { 0.0f, 1.0f, 1.0f, 1.0f }, {  5.0f,  5.0f, -5.0f } },
-    { { 1.0f, 1.0f, 1.0f, 1.0f }, {  0.0f, 11.0f,  0.0f } }, 
+    { { 0.0, 0.0, 1.0 }, { -5.0,  5.0, -5.0 } },
+    { { 0.0, 1.0, 1.0 }, {  5.0,  5.0, -5.0 } },
+    { { 1.0, 1.0, 1.0 }, {  0.0, 11.0,  0.0 } }, 
 
-    { { 1.0f, 0.0f, 0.0f, 1.0f }, {  5.0f,  5.0f, -5.0f } },
-    { { 1.0f, 1.0f, 0.0f, 1.0f }, {  5.0f,  5.0f,  5.0f } },
-    { { 1.0f, 1.0f, 1.0f, 1.0f }, {  0.0f, 11.0f,  0.0f } },
+    { { 1.0, 0.0, 0.0 }, {  5.0,  5.0, -5.0 } },
+    { { 1.0, 1.0, 0.0 }, {  5.0,  5.0,  5.0 } },
+    { { 1.0, 1.0, 1.0 }, {  0.0, 11.0,  0.0 } },
 
-    { { 0.0f, 1.0f, 0.0f, 1.0f }, {  5.0f,  5.0f,  5.0f } },
-    { { 0.0f, 1.0f, 1.0f, 1.0f }, { -5.0f,  5.0f,  5.0f } },
-    { { 1.0f, 1.0f, 1.0f, 1.0f }, {  0.0f, 11.0f,  0.0f } },
+    { { 0.0, 1.0, 0.0 }, {  5.0,  5.0,  5.0 } },
+    { { 0.0, 1.0, 1.0 }, { -5.0,  5.0,  5.0 } },
+    { { 1.0, 1.0, 1.0 }, {  0.0, 11.0,  0.0 } },
 
-    { { 0.0f, 1.0f, 0.0f, 1.0f }, { -5.0f,  5.0f,  5.0f } },
-    { { 1.0f, 1.0f, 0.0f, 1.0f }, { -5.0f,  5.0f, -5.0f } },
-    { { 1.0f, 1.0f, 1.0f, 1.0f }, {  0.0f, 11.0f,  0.0f } },
-
-    // Grass floor
-    { { 0.25f, 0.6f, 0.0f, 1.0f }, { -15.0f, -5.001f, -15.0f } },
-    { { 0.25f, 0.6f, 0.0f, 1.0f }, {  15.0f, -5.001f, -15.0f  } },
-    { { 0.25f, 0.6f, 0.0f, 1.0f }, { -15.0f, -5.001f,  15.0f  } },
-    { { 0.25f, 0.6f, 0.0f, 1.0f }, {  15.0f, -5.001f,  15.0f  } },
-
-    // Window #1
-    { { 0.4f, 0.4f, 0.6f, 0.5f }, { -5.0f, -5.0f, -5.0f } },
-    { { 0.4f, 0.4f, 0.6f, 0.5f }, { -5.0f,  5.0f, -5.0f } },
-    { { 0.4f, 0.4f, 0.6f, 0.5f }, {  0.0f,  5.0f, -5.0f } },
-    { { 0.4f, 0.4f, 0.6f, 0.5f }, {  0.0f, -5.0f, -5.0f } },
-
-    // Window #2
-    { { 0.4f, 0.4f, 0.6f, 0.5f }, {  0.0f, -5.0f,  5.0f } },
-    { { 0.4f, 0.4f, 0.6f, 0.5f }, {  0.0f,  5.0f,  5.0f } },
-    { { 0.4f, 0.4f, 0.6f, 0.5f }, {  5.0f,  5.0f,  5.0f } },
-    { { 0.4f, 0.4f, 0.6f, 0.5f }, {  5.0f, -5.0f,  5.0f } },
-
-
-
+    { { 0.0, 1.0, 0.0 }, { -5.0,  5.0,  5.0 } },
+    { { 1.0, 1.0, 0.0 }, { -5.0,  5.0, -5.0 } },
+    { { 1.0, 1.0, 1.0 }, {  0.0, 11.0,  0.0 } }
 };
 
 // House indices
 const unsigned char house[] = {
-// Walls
+//Walls
      0,  1,  2,
      0,  2,  3,
      4,  5,  6,
@@ -89,21 +65,11 @@ const unsigned char house[] = {
      8, 10, 11,
     12, 13, 14,
     12, 14, 15,
-// Roof
+//Roof
     16, 17, 18,
     19, 20, 21,
     22, 23, 24,
-    25, 26, 27,
-// Grass floor
-    28, 29, 30,
-    29, 30, 31,
-// Window #1
-    32, 33, 34,
-    32, 34, 35,
-// Window #2
-    36, 37, 38,
-    36, 38, 39,
-
+    25, 26, 27
 };
 
 GLuint VBO, EBO;
@@ -121,7 +87,6 @@ GLuint VS, FS, Prog;
 
 GLuint positionAttrib, colorAttrib;
 GLuint aspectUniform, translateUniform, rotateUniform, scaleUniform;
-GLuint mvpUniform;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -144,8 +109,6 @@ void onInit()
     rotateUniform = glGetUniformLocation(Prog, "rotate");
     scaleUniform = glGetUniformLocation(Prog, "scale");
 
-    mvpUniform = glGetUniformLocation(Prog, "mvp");
-
     // Copy house to graphics card
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -164,43 +127,22 @@ void onWindowRedraw()
 
     glUseProgram(Prog);
 
-    // Calculate MVP matrix
-    glm::mat4 projection = glm::perspective(45.0f, (float)width/(float)height, 1.0f, 1000.0f);
-    
-    glm::mat4 mv = glm::scale(
-            glm::rotate(
-                glm::rotate(
-                    glm::translate(
-                        glm::mat4(1.0f),
-                        glm::vec3(0, 0, pz)
-                        ),
-                    ry, glm::vec3(1, 0, 0)
-                    ),
-                rx, glm::vec3(0, 1, 0)
-                ), glm::vec3(min(pow(1.5f, wheel), 50.0f))
-            );
-
-    glm::mat4 mvp = projection * mv;
-
-    // Set up matrices
-    glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, glm::value_ptr(mvp)); 
+    glUniform1f(aspectUniform, (float)width/(float)height);
+    glUniform1f(translateUniform, pz);
+    glUniform2f(rotateUniform, ry*M_PI/180, rx*M_PI/180);
+    glUniform1f(scaleUniform, wheel);
 
     glEnableVertexAttribArray(positionAttrib);
     glEnableVertexAttribArray(colorAttrib);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glEnable(GL_BLEND); 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 
     glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)offsetof(Point, position));
-    glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)offsetof(Point, color));
+    glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Point), (void*)offsetof(Point, color));
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
     glDrawElements(GL_TRIANGLES, sizeof(house)/sizeof(*house), GL_UNSIGNED_BYTE, NULL);
-
-    glDisable(GL_BLEND);
 
     SDL_GL_SwapBuffers();
 }
