@@ -63,7 +63,8 @@
     <PreBuildEvent>
       <Command>copy $(ProjectDir)..\..\lib\glew\bin\glew32.dll $(TargetDir)
 copy $(ProjectDir)..\..\lib\sdl\lib\sdl.dll $(TargetDir)
-copy $(ProjectDir)shaders\*.* $(TargetDir)</Command>
+copy $(ProjectDir)shaders\*.* $(TargetDir)
+copy $(ProjectDir)images\*.* $(TargetDir)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

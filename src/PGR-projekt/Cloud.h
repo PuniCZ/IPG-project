@@ -16,7 +16,7 @@ class Cloud
         Cloud(void);
         ~Cloud(void);
 
-        void CopyParticlesToBuffer(GLuint VBO, GLuint EBO);
+        void CopyParticlesToBuffer(GLuint VBO);
 
         int GetNumberOfParticles() { return particles.size(); }
 

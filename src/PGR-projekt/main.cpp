@@ -29,10 +29,13 @@ float rx = 0.0f, ry = 0.0f, pz = -70.0f, wheel = 1.0f;
 ////////////////////////////////////////////////////////////////////////////////
 
 GLuint VS, FS, Prog;
+GLuint texture;
 
-GLuint positionAttrib, colorAttrib;
+GLuint positionAttrib, colorAttrib, texCoordsAtrib;
 GLuint rotateUniform;
 GLuint mvpUniform;
+
+GLuint textureUniform;
 
 Cloud cloud;
 
@@ -51,15 +54,29 @@ void onInit()
 
     positionAttrib = glGetAttribLocation(Prog, "position");
     colorAttrib = glGetAttribLocation(Prog, "color");
+    texCoordsAtrib = glGetAttribLocation(Prog, "texCoordIn");
 
+    textureUniform = glGetUniformLocation(Prog, "tex");
     rotateUniform = glGetUniformLocation(Prog, "rotate");
 
     mvpUniform = glGetUniformLocation(Prog, "mvp");
 
+    //Load texture from file
+    SDL_Surface * surface = SDL_LoadBMP("particle.bmp");
+    if(surface == NULL) throw SDL_Exception();
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    SurfaceImage2D(GL_TEXTURE_2D, 0, GL_RGB, surface);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
     // Copy house to graphics card
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    cloud.CopyParticlesToBuffer(VBO, EBO);
+    cloud.CopyParticlesToBuffer(VBO);
 
     /*
     glGenBuffers(1, &VBO);
@@ -78,9 +95,11 @@ int nomalizeAngle(float angle)
 
 void onWindowRedraw()
 {
+    glClearColor(0.f, 0.53f, 1.f, 1.f); 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
+    
 
     glUseProgram(Prog);
 
@@ -118,17 +137,25 @@ void onWindowRedraw()
 
     glEnableVertexAttribArray(positionAttrib);
     glEnableVertexAttribArray(colorAttrib);
+    glEnableVertexAttribArray(texCoordsAtrib);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glEnable(GL_BLEND); 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, 28, (void*)16);
-    glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, 28, (void*)0);
+
+    //texture
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(textureUniform, 0); 
+
+    glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, 36, (void*)0);
+    glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, 36, (void*)16);
+    glVertexAttribPointer(texCoordsAtrib, 2, GL_FLOAT, GL_FALSE, 36, (void*)28);
 
     //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
+    glDepthMask(GL_FALSE); 
     glDrawArrays(GL_QUADS, 0, cloud.GetNumberOfParticles()*4);
+    glDepthMask(GL_TRUE); 
     //glDrawElements(GL_TRIANGLES, cloud.GetNumberOfParticles()*6*4, GL_UNSIGNED_INT, NULL);
 
 
@@ -207,6 +234,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
     } catch(exception & ex) {
         cout << "ERROR : " << ex.what() << endl;
+        getchar();
         return EXIT_FAILURE;
     }
 

@@ -12,16 +12,17 @@
 typedef struct renderablePoint {
     glm::vec4 color;
     glm::vec3 position;
+    glm::vec2 textCoord;
 } RenderablePoint;
 
 class CloudParticle
 {
     public:
         CloudParticle(float color)
-            :baseColor(RAND(1), RAND(1), RAND(1), 1.f)
+            :baseColor(.2f, .2f, .2f, .5f)
         {
             //TEMP
-            radius = RAND(0.5)+.02f;
+            radius = RAND(0.5)+1.2f;
             position.x += 10-RAND(20);
             position.y += 10-RAND(20);
             position.z += 10-RAND(20);
@@ -61,22 +62,30 @@ class CloudParticle
             RenderablePoints[0].position.x = position.x - radius/2.f;
             RenderablePoints[0].position.y = position.y - radius/2.f;
             RenderablePoints[0].position.z = position.z;
+            RenderablePoints[0].textCoord.x = 0.0f;
+            RenderablePoints[0].textCoord.y = 0.0f;
 
             RenderablePoints[1].position.x = position.x + radius/2.f;
             RenderablePoints[1].position.y = position.y - radius/2.f;
             RenderablePoints[1].position.z = position.z;
+            RenderablePoints[1].textCoord.x = 1.0f;
+            RenderablePoints[1].textCoord.y = 0.0f;
 
             RenderablePoints[2].position.x = position.x + radius/2.f;
             RenderablePoints[2].position.y = position.y + radius/2.f;
             RenderablePoints[2].position.z = position.z;
+            RenderablePoints[2].textCoord.x = 1.0f;
+            RenderablePoints[2].textCoord.y = 1.0f;
 
             RenderablePoints[3].position.x = position.x - radius/2.f;
             RenderablePoints[3].position.y = position.y + radius/2.f;
             RenderablePoints[3].position.z = position.z;
+            RenderablePoints[3].textCoord.x = 0.0f;
+            RenderablePoints[3].textCoord.y = 1.0f;
 
             for (int i=0; i < 4; i++)
             {
-                RenderablePoints[i].color = baseColor;
+                RenderablePoints[i].color = baseColor;                
             }
 
             
