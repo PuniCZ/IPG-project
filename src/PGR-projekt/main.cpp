@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Cloud.h"
+#include "Utils.h"
 
 using namespace std;
 const float M_PI = 3.141592654f;
@@ -37,7 +38,8 @@ GLuint mvpUniform;
 
 GLuint textureUniform;
 
-Cloud cloud;
+std::vector<Cloud*> clouds;
+int numOfClouds = 2;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +64,7 @@ void onInit()
     mvpUniform = glGetUniformLocation(Prog, "mvp");
 
     //Load texture from file
-    SDL_Surface * surface = SDL_LoadBMP("particle.bmp");
+    /*SDL_Surface * surface = SDL_LoadBMP("particle.bmp");
     if(surface == NULL) throw SDL_Exception();
 
     glGenTextures(1, &texture);
@@ -72,11 +74,33 @@ void onInit()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     SurfaceImage2D(GL_TEXTURE_2D, 0, GL_RGB, surface);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateMipmap(GL_TEXTURE_2D);*/
 
-    // Copy house to graphics card
+
+    clouds.push_back(new Cloud(glm::vec3(0), glm::vec3(7, 2, 5)));
+    clouds.push_back(new Cloud(glm::vec3(6, 5, 2), glm::vec3(4, 1.5f, 3)));
+    clouds.push_back(new Cloud(glm::vec3(-6, -5, -10), glm::vec3(4, 1.5f, 3)));
+
+    clouds.push_back(new Cloud(glm::vec3(50, 5, -5), glm::vec3(8, 8, 6)));
+    clouds.push_back(new Cloud(glm::vec3(56, 15, -6), glm::vec3(16, 5, 9)));
+    clouds.push_back(new Cloud(glm::vec3(44, 10, -9), glm::vec3(12, 5, 8)));
+
     glGenBuffers(1, &VBO);
-    cloud.CopyParticlesToBuffer(VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*36*Cloud::particlesInCloud*clouds.size(), NULL, GL_STREAM_DRAW);
+    int i = 0;
+    for (std::vector<Cloud*>::iterator it = clouds.begin(); it != clouds.end(); it++)
+    {
+        //glm::vec3(0), glm::vec3(7, 2, 5)
+        (*it)->CopyParticlesToBuffer(VBO, i*36*Cloud::particlesInCloud);
+        i++;
+    }
+
+
+    texture = Utils::CreateSplatTexture(32);
+
+    
+    
 
     /*
     glGenBuffers(1, &VBO);
@@ -95,7 +119,10 @@ int nomalizeAngle(float angle)
 
 void onWindowRedraw()
 {
-    glClearColor(0.f, 0.53f, 1.f, 1.f); 
+    //glClearColor(0.f, 0.53f, 1.f, 1.f); 
+
+    glClearColor(0.53f, 0.73f, 1.f, 1.f); 
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_DEPTH_TEST);
@@ -118,7 +145,7 @@ void onWindowRedraw()
                 rx, glm::vec3(0, 1, 0)
                 ), glm::vec3(min(pow(1.5f, wheel), 50.0f))
             );
-
+    
     /*glm::mat4 mv = glm::scale(
                     glm::translate(
                         glm::mat4(1.0f),
@@ -152,11 +179,9 @@ void onWindowRedraw()
     glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, 36, (void*)16);
     glVertexAttribPointer(texCoordsAtrib, 2, GL_FLOAT, GL_FALSE, 36, (void*)28);
 
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glDepthMask(GL_FALSE); 
-    glDrawArrays(GL_QUADS, 0, cloud.GetNumberOfParticles()*4);
-    glDepthMask(GL_TRUE); 
-    //glDrawElements(GL_TRIANGLES, cloud.GetNumberOfParticles()*6*4, GL_UNSIGNED_INT, NULL);
+    glDrawArrays(GL_QUADS, 0, clouds.size() * Cloud::particlesInCloud * 4);
+    glDepthMask(GL_TRUE);
 
 
     

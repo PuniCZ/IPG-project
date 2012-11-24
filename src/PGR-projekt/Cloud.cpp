@@ -1,12 +1,12 @@
 #include "Cloud.h"
 #include <time.h>
 
-Cloud::Cloud(void)
+Cloud::Cloud(glm::vec3 position, glm::vec3 size)
 {
-    srand(time(NULL));
-    for (int i = 0; i < 5000; i++)
+    srand((unsigned int)time(NULL));
+    for (int i = 0; i < particlesInCloud; i++)
     {
-        particles.push_back(CloudParticle(i*.2f));
+        particles.push_back(CloudParticle(position, size));
     }
 }
 
@@ -16,14 +16,12 @@ Cloud::~Cloud(void)
 }
 
 
-void Cloud::CopyParticlesToBuffer(GLuint VBO)
-{
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    //allocate buffer memory
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*36*particles.size(), NULL, GL_STREAM_DRAW);
+void Cloud::CopyParticlesToBuffer(GLuint VBO, int offset)
+{    
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);   
     //fill buffer
     float *buffer = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-    int bufferOffset = 0;    
+    int bufferOffset = offset;    
     for (std::vector<CloudParticle>::iterator it = particles.begin(); it != particles.end(); it++)
     {
         for (int i = 0; i < 4; i++)
@@ -31,23 +29,8 @@ void Cloud::CopyParticlesToBuffer(GLuint VBO)
             memcpy(buffer + bufferOffset + 0, glm::value_ptr(it->RenderablePoints[i].color), sizeof(float)*4);
             memcpy(buffer + bufferOffset + 4, glm::value_ptr(it->RenderablePoints[i].position), sizeof(float)*3);
             memcpy(buffer + bufferOffset + 7, glm::value_ptr(it->RenderablePoints[i].textCoord), sizeof(float)*2);
-            bufferOffset += 9;
-        }
-        /*memcpy(buffer + bufferOffset + 0, glm::value_ptr(it->RenderablePoints[0].color), sizeof(float)*4);
-        memcpy(buffer + bufferOffset + 4, glm::value_ptr(it->RenderablePoints[0].position), sizeof(float)*3);
-        memcpy(buffer + bufferOffset + 3, glm::value_ptr(it->RenderablePoints[0].textCoord), sizeof(float)*2);
-
-        memcpy(buffer + bufferOffset + 7, glm::value_ptr(it->RenderablePoints[1].color), sizeof(float)*4);
-        memcpy(buffer + bufferOffset + 11, glm::value_ptr(it->RenderablePoints[1].position), sizeof(float)*3);
-
-        memcpy(buffer + bufferOffset + 14, glm::value_ptr(it->RenderablePoints[2].color), sizeof(float)*4);
-        memcpy(buffer + bufferOffset + 18, glm::value_ptr(it->RenderablePoints[2].position), sizeof(float)*3);
-
-        memcpy(buffer + bufferOffset + 21, glm::value_ptr(it->RenderablePoints[3].color), sizeof(float)*4);
-        memcpy(buffer + bufferOffset + 25, glm::value_ptr(it->RenderablePoints[3].position), sizeof(float)*3);*/
-        
-
-        
+            bufferOffset += 9; //Important: if changed, change also allocation
+        }        
     }
     glUnmapBuffer(GL_ARRAY_BUFFER);
 }

@@ -103,11 +103,13 @@ copy $(ProjectDir)images\*.* $(TargetDir)</Command>
     <ClCompile Include="..\labs\pgr.cpp" />
     <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="CloudParticle.h" />
     <ClInclude Include="pgr.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

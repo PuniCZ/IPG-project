@@ -13,12 +13,14 @@
 class Cloud
 {
     public:
-        Cloud(void);
+        Cloud(glm::vec3 position, glm::vec3 size);
         ~Cloud(void);
 
-        void CopyParticlesToBuffer(GLuint VBO);
+        void CopyParticlesToBuffer(GLuint VBO, int offset);
 
         int GetNumberOfParticles() { return particles.size(); }
+
+        static const int particlesInCloud = 3000;
 
     protected:
         std::vector<CloudParticle> particles;

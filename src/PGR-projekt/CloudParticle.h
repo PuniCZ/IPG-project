@@ -6,8 +6,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Utils.h"
 
-#define RAND(max) (float(rand())/RAND_MAX)*max
+#include <math.h>
+
 
 typedef struct renderablePoint {
     glm::vec4 color;
@@ -18,15 +20,17 @@ typedef struct renderablePoint {
 class CloudParticle
 {
     public:
-        CloudParticle(float color)
-            :baseColor(.2f, .2f, .2f, .5f)
+        CloudParticle(glm::vec3 pos, glm::vec3 size)
+            :baseColor(.2f, .2f, .2f, .5f), position(pos)
         {
-            //TEMP
-            radius = RAND(0.5)+1.2f;
-            position.x += 10-RAND(20);
-            position.y += 10-RAND(20);
-            position.z += 10-RAND(20);
+            float particleSize = std::max(std::max(size.x,size.y),size.z)/5;
 
+            radius = particleSize*2+abs(Utils::Gaussrand(particleSize, particleSize));
+            
+            position.x += Utils::Gaussrand(size.x, size.x*3);
+            position.y += Utils::Gaussrand(size.y, size.y*3);
+            position.z += Utils::Gaussrand(size.z, size.z*3);
+                        
 
             Update();
         }
@@ -47,11 +51,6 @@ class CloudParticle
         }
 
         inline glm::vec3& GetPosition()
-        {
-            return position;
-        }
-
-        inline glm::vec3& GetPointPosition()
         {
             return position;
         }
