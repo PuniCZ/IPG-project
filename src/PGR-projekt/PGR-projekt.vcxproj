@@ -62,7 +62,8 @@
     </Link>
     <PreBuildEvent>
       <Command>copy $(ProjectDir)..\..\lib\glew\bin\glew32.dll $(TargetDir)
-copy $(ProjectDir)..\..\lib\sdl\lib\sdl.dll $(TargetDir)</Command>
+copy $(ProjectDir)..\..\lib\sdl\lib\sdl.dll $(TargetDir)
+copy $(ProjectDir)shaders\*.* $(TargetDir)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -90,23 +91,22 @@ copy $(ProjectDir)..\..\lib\sdl\lib\sdl.dll $(TargetDir)</Command>
       <FileType>Document</FileType>
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="shaders\particle.fs" />
+    <None Include="shaders\particle.vs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\tmp\lab01_task.fs" />
-    <None Include="..\tmp\lab01_task.vs" />
-    <None Include="..\tmp\lab02_01_osvetleni.fs" />
-    <None Include="..\tmp\lab02_01_osvetleni.vs" />
-    <None Include="..\tmp\lab02_02_shadertex.fs" />
-    <None Include="..\tmp\lab02_02_shadertex.vs" />
     <None Include="..\tmp\lightmap.bmp" />
     <None Include="..\tmp\tiles.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\lab1\lab01_task.cpp" />
     <ClCompile Include="..\labs\pgr.cpp" />
+    <ClCompile Include="Cloud.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\labs\pgr.h" />
+    <ClInclude Include="Cloud.h" />
+    <ClInclude Include="CloudParticle.h" />
+    <ClInclude Include="pgr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

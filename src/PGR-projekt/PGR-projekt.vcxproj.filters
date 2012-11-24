@@ -30,41 +30,38 @@
     <None Include="..\tmp\tiles.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\tmp\lab01_task.fs">
-      <Filter>Fragment Shaders</Filter>
-    </None>
-    <None Include="..\tmp\lab02_01_osvetleni.fs">
-      <Filter>Fragment Shaders</Filter>
-    </None>
-    <None Include="..\tmp\lab02_02_shadertex.fs">
-      <Filter>Fragment Shaders</Filter>
-    </None>
-    <None Include="..\tmp\lab01_task.vs">
-      <Filter>Vertex Shaders</Filter>
-    </None>
-    <None Include="..\tmp\lab02_02_shadertex.vs">
-      <Filter>Vertex Shaders</Filter>
-    </None>
-    <None Include="..\tmp\lab02_01_osvetleni.vs">
-      <Filter>Vertex Shaders</Filter>
-    </None>
     <None Include="..\..\lib\sdl\lib\SDL.dll">
       <Filter>Libs</Filter>
     </None>
     <None Include="..\..\lib\glew\bin\glew32.dll">
       <Filter>Libs</Filter>
     </None>
+    <None Include="shaders\particle.vs">
+      <Filter>Vertex Shaders</Filter>
+    </None>
+    <None Include="shaders\particle.fs">
+      <Filter>Fragment Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\labs\pgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\lab1\lab01_task.cpp">
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cloud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\labs\pgr.h">
+    <ClInclude Include="pgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cloud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CloudParticle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
