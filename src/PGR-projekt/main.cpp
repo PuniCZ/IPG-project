@@ -30,13 +30,14 @@ float rx = 0.0f, ry = 0.0f, pz = -70.0f, wheel = 1.0f;
 ////////////////////////////////////////////////////////////////////////////////
 
 GLuint VS, FS, Prog;
-GLuint texture;
+//GLuint texture;
 
-GLuint positionAttrib, colorAttrib, texCoordsAtrib;
+//GLuint positionAttrib, colorAttrib, texCoordsAtrib;
 GLuint rotateUniform;
-GLuint mvpUniform;
+//GLuint mvpUniform;
+bool first = true;
 
-GLuint textureUniform;
+//GLuint textureUniform;
 
 std::vector<Cloud*> clouds;
 int numOfClouds = 2;
@@ -54,14 +55,15 @@ void onInit()
     FS = compileShader(GL_FRAGMENT_SHADER, loadFile("particle.fs").c_str());
     Prog = linkShader(2, VS, FS);
 
-    positionAttrib = glGetAttribLocation(Prog, "position");
-    colorAttrib = glGetAttribLocation(Prog, "color");
-    texCoordsAtrib = glGetAttribLocation(Prog, "texCoordIn");
+    Utils::glPositionAttrib = glGetAttribLocation(Prog, "position");
+    Utils::glColorAttrib = glGetAttribLocation(Prog, "color");
+    Utils::glTexCoordsAtrib = glGetAttribLocation(Prog, "texCoordIn");
 
-    textureUniform = glGetUniformLocation(Prog, "tex");
+    Utils::glTextureUniform = glGetUniformLocation(Prog, "tex");
     rotateUniform = glGetUniformLocation(Prog, "rotate");
 
-    mvpUniform = glGetUniformLocation(Prog, "mvp");
+    //mvpUniform = glGetUniformLocation(Prog, "mvp");
+    Utils::glMvpUniform = glGetUniformLocation(Prog, "mvp");
 
     //Load texture from file
     /*SDL_Surface * surface = SDL_LoadBMP("particle.bmp");
@@ -87,19 +89,19 @@ void onInit()
 
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*36*Cloud::particlesInCloud*clouds.size(), NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * PARTICLE_STRUCT_SIZE * PARTICLES_IN_CLOUD*clouds.size(), NULL, GL_STREAM_DRAW);
     int i = 0;
     for (std::vector<Cloud*>::iterator it = clouds.begin(); it != clouds.end(); it++)
     {
         //glm::vec3(0), glm::vec3(7, 2, 5)
-        (*it)->CopyParticlesToBuffer(VBO, i*36*Cloud::particlesInCloud);
+        (*it)->CopyParticlesToBuffer(VBO, i * PARTICLE_STRUCT_SIZE * PARTICLES_IN_CLOUD);
         i++;
     }
 
 
-    texture = Utils::CreateSplatTexture(32);
+    Utils::glTexture0 = Utils::CreateSplatTexture(32);
 
-    
+    glGenBuffers(1, &Utils::glVBO1);
     
 
     /*
@@ -156,15 +158,26 @@ void onWindowRedraw()
 
     glm::mat4 mvp = projection * mv;
 
+    int i = 0;
+    for (std::vector<Cloud*>::iterator it = clouds.begin(); it != clouds.end(); it++)
+    {
+        //glm::vec3(0), glm::vec3(7, 2, 5)
+        if ((*it)->Update(glm::vec3(rx, ry, pz)))
+        {
+            (*it)->CopyParticlesToBuffer(VBO, i * PARTICLE_STRUCT_SIZE * PARTICLES_IN_CLOUD);
+        }
+        i++;
+    }
+
 
 //    glUniformMatrix4fv(rotateUniform, 1, GL_FALSE, glm::value_ptr(mv2)); 
 
     // Set up matrices
-    glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, glm::value_ptr(mvp)); 
+    glUniformMatrix4fv(Utils::glMvpUniform, 1, GL_FALSE, glm::value_ptr(mvp)); 
 
-    glEnableVertexAttribArray(positionAttrib);
-    glEnableVertexAttribArray(colorAttrib);
-    glEnableVertexAttribArray(texCoordsAtrib);
+    glEnableVertexAttribArray(Utils::glPositionAttrib);
+    glEnableVertexAttribArray(Utils::glColorAttrib);
+    glEnableVertexAttribArray(Utils::glTexCoordsAtrib);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glEnable(GL_BLEND); 
@@ -172,15 +185,15 @@ void onWindowRedraw()
 
     //texture
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(textureUniform, 0); 
+    glBindTexture(GL_TEXTURE_2D, Utils::glTexture0);
+    glUniform1i(Utils::glTextureUniform, 0); 
 
-    glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, 36, (void*)0);
-    glVertexAttribPointer(positionAttrib, 3, GL_FLOAT, GL_FALSE, 36, (void*)16);
-    glVertexAttribPointer(texCoordsAtrib, 2, GL_FLOAT, GL_FALSE, 36, (void*)28);
+    glVertexAttribPointer(Utils::glColorAttrib, 4, GL_FLOAT, GL_FALSE, PARTICLE_STRUCT_SIZE, (void*)0);
+    glVertexAttribPointer(Utils::glPositionAttrib, 3, GL_FLOAT, GL_FALSE, PARTICLE_STRUCT_SIZE, (void*)16);
+    glVertexAttribPointer(Utils::glTexCoordsAtrib, 2, GL_FLOAT, GL_FALSE, PARTICLE_STRUCT_SIZE, (void*)28);
 
     glDepthMask(GL_FALSE); 
-    glDrawArrays(GL_QUADS, 0, clouds.size() * Cloud::particlesInCloud * 4);
+    glDrawArrays(GL_QUADS, 0, clouds.size() * PARTICLES_IN_CLOUD * 4);
     glDepthMask(GL_TRUE);
 
 
@@ -189,6 +202,17 @@ void onWindowRedraw()
     glDisable(GL_BLEND);
 
     SDL_GL_SwapBuffers();
+
+    Light light(glm::vec3(50, 0, -20), glm::vec3(-5,0,2), glm::vec4(.8), glm::vec4(.4), glm::vec4(.6));
+    if (first){
+        for (std::vector<Cloud*>::iterator it = clouds.begin(); it != clouds.end(); it++)
+        {
+            //glm::vec3(0), glm::vec3(7, 2, 5)
+            (*it)->Illuminate(light, true);
+        }
+        first = false;
+    }
+
 }
 
 void onWindowResized(int w, int h)

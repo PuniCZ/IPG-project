@@ -7,7 +7,7 @@
 
 #define RAND(max) (float(rand())/RAND_MAX)*max
 
-class Utils
+static class Utils
 {
     public:
 
@@ -16,6 +16,12 @@ class Utils
         static unsigned char* CreateGaussianMap(int N);
         static GLuint CreateSplatTexture(unsigned int size);
 
+        static GLuint glMvpUniform, glTextureUniform;
+        static GLuint glPositionAttrib, glColorAttrib, glTexCoordsAtrib;
+        static GLuint glTexture0;
+        static GLuint glVBO1;
+
         
 };
+
 

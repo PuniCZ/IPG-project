@@ -108,3 +108,9 @@ GLuint Utils::CreateSplatTexture(unsigned int size)
 
     return texture;
 }
+
+
+GLuint Utils::glMvpUniform, Utils::glTextureUniform;
+GLuint Utils::glPositionAttrib, Utils::glColorAttrib, Utils::glTexCoordsAtrib;
+GLuint Utils::glTexture0;
+GLuint Utils::glVBO1;

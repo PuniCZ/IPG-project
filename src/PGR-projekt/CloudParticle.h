@@ -2,6 +2,7 @@
 
 #include "pgr.h"
 #include <vector>
+#include "Defines.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -32,7 +33,7 @@ class CloudParticle
             position.z += Utils::Gaussrand(size.z, size.z*3);
                         
 
-            Update();
+            Update(baseColor);
         }
 
         ~CloudParticle(void) { };
@@ -55,7 +56,7 @@ class CloudParticle
             return position;
         }
 
-        void Update()
+        void Update(glm::vec4 color)
         {            
             //front
             RenderablePoints[0].position.x = position.x - radius/2.f;
@@ -84,19 +85,65 @@ class CloudParticle
 
             for (int i=0; i < 4; i++)
             {
-                RenderablePoints[i].color = baseColor;                
+                RenderablePoints[i].color = color;                
             }
 
             
             
         }
+
+        void SetSquareSortDistance(float squareDistance) { squareSortDistance = squareDistance; }
+        float GetSquareSortDistance() { return squareSortDistance; }
+
+        //! This operator is used to sort particle arrays from nearest to farthes.
+        bool operator<(const CloudParticle& p) const
+        {
+            return (squareSortDistance < p.squareSortDistance);
+        }
+
+        //! This operator is used to sort particle arrays from farthest to nearest.
+        bool operator>(const CloudParticle& p) const
+        {
+            return (squareSortDistance > p.squareSortDistance);
+        }
         
-        RenderablePoint RenderablePoints[4]; 
+        RenderablePoint RenderablePoints[4];
+
+        void SetBaseColor(glm::vec4 color) { baseColor = color; }
+        void ClearLitColors() { litColors.clear(); }
+        void AddLitColor(glm::vec4 color) { litColors.push_back(color); }
+
+        //Assumes all atribs are ready
+        void Draw()
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, Utils::glVBO1);
+            //allocate buffer memory
+            glBufferData(GL_ARRAY_BUFFER, sizeof(float) * PARTICLE_STRUCT_SIZE, NULL, GL_STREAM_DRAW);
+            //fill buffer
+            int bufferOffset = 0; 
+            float *buffer = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+            for (int i = 0; i < 4; i++)
+            {
+                memcpy(buffer + bufferOffset + 0, glm::value_ptr(RenderablePoints[i].color), sizeof(float)*4);
+                memcpy(buffer + bufferOffset + 4, glm::value_ptr(RenderablePoints[i].position), sizeof(float)*3);
+                memcpy(buffer + bufferOffset + 7, glm::value_ptr(RenderablePoints[i].textCoord), sizeof(float)*2);
+                bufferOffset += 9; //Important: if changed, change also PARTICLE_STRUCT_SIZE
+            }
+            glUnmapBuffer(GL_ARRAY_BUFFER);
+            //draw contents
+            //glDisableVertexAttribArray(normalAttrib);
+            //glVertexAttribPointer(positionAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+            //glDrawArrays(GL_TRIANGLE_FAN, 0, 4);//draw shading quad
+            glDrawArrays(GL_QUADS, 0, 4);
+            //glEnableVertexAttribArray(normalAttrib);    
+        }
+
 
     protected:
 
         float radius;
         float transparency;
+        float squareSortDistance;
         glm::vec3 position;
         glm::vec4 baseColor;
         std::vector<glm::vec4> litColors;
