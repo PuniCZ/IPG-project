@@ -1,5 +1,5 @@
 #include "Primitive.h"
-
+#include <iostream>
 
 Primitive::Primitive(void)
     :isLight(false)
@@ -91,8 +91,18 @@ bool Particle::Intersect(Ray& ray, float& dist)
             {
                 dist = glm::dot(normal, contactPoint - ray.GetOrigin());
                 //float c = 1-(((float)rand()/RAND_MAX/distToCenter/20)*radius);
-                float c = 1 - distToCenter/radius;
-                material.SetColor(glm::vec4(c, c, c, c));
+                //float c = 1 - distToCenter/radius;
+
+                glm::vec3 planePos(contactPoint - this->position);
+                int texPosX = glm::clamp((int)(planePos.x / radius * 255) + 128, 0, 255);
+                int texPosY = glm::clamp((int)(planePos.y / radius * 255) + 128, 0, 255);
+
+                
+
+                float c = this->texture[(texPosY * 255 + texPosX)]/255.f;
+                //std::cout << texPosX << " " << texPosY << " " << c << "\n"; 
+
+                material.SetColor(glm::vec4(c, c, c, 1));
 
                 return true;
             }

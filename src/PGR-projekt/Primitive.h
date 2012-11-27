@@ -2,6 +2,7 @@
 
 #include <glm\glm.hpp>
 #include "Ray.h"
+#include "Utils.h"
 
 class Material
 {
@@ -69,9 +70,14 @@ class Plane : public Primitive
 public:
     Plane(glm::vec3 normal, float distance)
         :normal(normal), distance(distance)
-    { }
+    { 
+        
+    }
 
-    ~Plane(void) { };
+    ~Plane(void) 
+    {
+        
+    };
 
     float GetDistance() { return distance; }
     void SetDistance(float dist)
@@ -135,9 +141,14 @@ class Particle : public Primitive
 public:
     Particle(glm::vec3 position, glm::vec3 normal, float radius)
         :position(position), radius(radius), normal(normal)
-    { }
+    {
+        texture = Utils::CreateGaussianMap(256);
+    }
 
-    ~Particle(void) { };
+    ~Particle(void) 
+    { 
+        delete[] texture;
+    };
 
     float GetRadius() { return radius; }
     void SetRadius(float radius)
@@ -162,6 +173,8 @@ private:
     glm::vec3 position;
     glm::vec3 normal;
     float radius;
+    
+    unsigned char* texture;
 };
 
 

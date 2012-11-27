@@ -60,7 +60,7 @@ inline float Utils::EvalHermite(float pA, float pB, float vA, float vB, float u)
 unsigned char* Utils::CreateGaussianMap(int N)
 {
   float *M = new float[2*N*N];
-  unsigned char *B = new unsigned char[4*N*N];
+  unsigned char *B = new unsigned char[N*N];
   float X,Y,Y2,Dist;
   float Incr = 2.0f/N;
   int i=0;  
@@ -70,12 +70,12 @@ unsigned char* Utils::CreateGaussianMap(int N)
   {
     Y2=Y*Y;
     X = -1.0f;
-    for (int x=0; x<N; x++, X+=Incr, i+=2, j+=4)
+    for (int x=0; x<N; x++, X+=Incr, i+=2, j+=1)
     {
       Dist = (float)sqrt(X*X+Y2);
       if (Dist>1) Dist=1;
       M[i+1] = M[i] = EvalHermite(0.4f,0,0,0,Dist);// * (1 - noise);
-      B[j+3] = B[j+2] = B[j+1] = B[j] = (unsigned char)(M[i] * 255);
+      B[j] = (unsigned char)(M[i] * 255);
     }
   }
   delete[] M;
