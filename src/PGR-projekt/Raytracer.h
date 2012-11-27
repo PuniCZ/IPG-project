@@ -13,6 +13,7 @@ public:
     bool Render(Scene& scene);
 
     glm::vec4 Raytrace(Scene& scene, Ray& ray, glm::vec4&color, int depth, float& distance);
+	int getCurrentLine(){return curLine;};
 
 private:
     CameraPlane* camera;

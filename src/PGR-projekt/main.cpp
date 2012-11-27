@@ -42,7 +42,7 @@ int main (int /*argc*/, char ** /*argv*/)
     
     SDL_WM_SetCaption("Raytracing clouds", NULL);
 
-    SDL_Surface *screen = SDL_SetVideoMode( 800 , 600 , 32 , SDL_DOUBLEBUF|SDL_HWSURFACE|SDL_ANYFORMAT);
+    SDL_Surface *screen = SDL_SetVideoMode( 800 , 600 , 32 , SDL_HWSURFACE |SDL_ANYFORMAT); // | SDL_DOUBLEBUF
 
     CameraPlane camera = CameraPlane(glm::vec3(0, 0 , -5), glm::vec3(0, 0, 0), glm::vec2(screen->w, screen->h));
 
@@ -54,7 +54,7 @@ int main (int /*argc*/, char ** /*argv*/)
 
     Raytracer raytracer = Raytracer(&camera);
     
-    raytracer.Render(scene);
+    //raytracer.Render(scene);
 
     SDL_Event event;
     bool done = false;
@@ -66,19 +66,22 @@ int main (int /*argc*/, char ** /*argv*/)
             }
         }
 
-        /*if (!renderFinished)
-            renderFinished = raytracer.Render(scene);*/
+        if (!renderFinished)
+        {    renderFinished = raytracer.Render(scene);
 
         for (int i = 0; i < screen->w ; i++)
         {
-            for (int j = 0; j < screen->h ; j++)
+            for (int j = raytracer.getCurrentLine()-1; j < raytracer.getCurrentLine() ; j++)
             {
                 glm::vec3 color = buffer->GetPixel(i, j);
                 PutPixel32(screen, i, j, SDL_MapRGBA(screen->format, color.r*255.f, color.g*255.f, color.b*255.f, 255));
             }
         }
-        // update the screen buffer
-        SDL_Flip(screen);
+        // update the screen buffer	
+		//SDL_Flip(screen);
+		SDL_UpdateRect(screen, 0, 0,  screen->w,  screen->h);
+		}
+		
     }
 
 

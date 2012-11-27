@@ -1,7 +1,6 @@
 #include "Raytracer.h"
 
 
-
 Raytracer::Raytracer(CameraPlane* camera)
 {
     this->camera = camera;
@@ -26,7 +25,6 @@ Raytracer::~Raytracer(void)
 bool Raytracer::Render(Scene& scene)
 {
     glm::vec4 color;
-
     for (int y = curLine; y < camera->GetHeight(); y++)
     {
         posX = screenX1;
@@ -43,7 +41,7 @@ bool Raytracer::Render(Scene& scene)
         }
         posY += screenDiffY;
         curLine++;
-        //return false;
+        return false;
     }
     return true;
 }
