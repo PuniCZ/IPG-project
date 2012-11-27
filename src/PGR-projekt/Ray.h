@@ -9,6 +9,8 @@ public:
     Ray(glm::vec3 origin, glm::vec3 direction);
     ~Ray(void);
 
+    glm::vec3 GetDirection() { return direction; }
+    glm::vec3 GetOrigin() { return origin; }
 
 
 protected:

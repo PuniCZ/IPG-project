@@ -105,8 +105,10 @@ copy $(ProjectDir)images\*.* $(TargetDir)</Command>
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainOpenGL.cpp" />
+    <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Raytracer.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ScreenBuffer.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
@@ -116,8 +118,10 @@ copy $(ProjectDir)images\*.* $(TargetDir)</Command>
     <ClInclude Include="CloudParticle.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Primitive.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Raytracer.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="ScreenBuffer.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

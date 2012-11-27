@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "CameraPlane.h"
+#include "Raytracer.h"
 
 
 
@@ -43,18 +44,30 @@ int main (int /*argc*/, char ** /*argv*/)
 
     SDL_Surface *screen = SDL_SetVideoMode( 800 , 600 , 32 , SDL_DOUBLEBUF|SDL_HWSURFACE|SDL_ANYFORMAT);
 
-    CameraPlane camera = CameraPlane(glm::vec3(0, 0 , -5), glm::vec3(0, 0 , 1), glm::vec2(screen->w, screen->h));
+    CameraPlane camera = CameraPlane(glm::vec3(0, 0 , -5), glm::vec3(0, 0, 0), glm::vec2(screen->w, screen->h));
 
     ScreenBuffer* buffer = camera.GetBuffer();
 
+    Scene scene = Scene();
+
+    scene.Init();
+
+    Raytracer raytracer = Raytracer(&camera);
+    
+    raytracer.Render(scene);
+
     SDL_Event event;
     bool done = false;
+    bool renderFinished = false;
     while(!done) {
         while(SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
             done=true;
             }
         }
+
+        /*if (!renderFinished)
+            renderFinished = raytracer.Render(scene);*/
 
         for (int i = 0; i < screen->w ; i++)
         {
