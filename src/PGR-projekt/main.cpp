@@ -4,6 +4,7 @@
 #include <exception>
 #include <stdexcept>
 #include <iostream>
+#include <time.h>
 
 #include "CameraPlane.h"
 #include "Raytracer.h"
@@ -55,6 +56,8 @@ int main (int /*argc*/, char ** /*argv*/)
     Raytracer raytracer = Raytracer(&camera);
     
     //raytracer.Render(scene);
+
+    srand((unsigned int)time(NULL));
 
     SDL_Event event;
     bool done = false;

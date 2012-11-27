@@ -21,6 +21,11 @@ public:
     ~Material() { };
 
     glm::vec4 GetColor() { return color; }
+    void SetColor(glm::vec4 color) 
+    { 
+        this->color = color; 
+    }
+
     float GetDiffuse() { return diffuse; }
 
 private:
@@ -50,7 +55,7 @@ public:
     }
 
 
-    virtual glm::vec3 GetNormal(glm::vec3 pos) = 0;
+    virtual glm::vec3 GetNormal(glm::vec3 dir) = 0;
     virtual bool Intersect(Ray& ray, float& dist) = 0;
 
 
@@ -111,9 +116,9 @@ public:
         this->position = position;
     }
 
-    glm::vec3 GetNormal(glm::vec3 pos) 
+    glm::vec3 GetNormal(glm::vec3 dir) 
     { 
-        return (pos - this->position) * this->revRadius; 
+        return (dir - this->position) * this->revRadius; 
     }
 
     bool Intersect(Ray& ray, float& dist);
@@ -123,6 +128,40 @@ private:
     float radius;
     float sqrRadius;
     float revRadius;
+};
+
+class Particle : public Primitive
+{
+public:
+    Particle(glm::vec3 position, glm::vec3 normal, float radius)
+        :position(position), radius(radius), normal(normal)
+    { }
+
+    ~Particle(void) { };
+
+    float GetRadius() { return radius; }
+    void SetRadius(float radius)
+    {
+        this->radius = radius;
+    }
+
+    glm::vec3 GetPosition() { return position; }
+    void SetPosition(glm::vec3 position)
+    {
+        this->position = position;
+    }
+
+    glm::vec3 GetNormal(glm::vec3 dir) 
+    { 
+        return normal; 
+    }
+
+    bool Intersect(Ray& ray, float& dist);
+
+private:
+    glm::vec3 position;
+    glm::vec3 normal;
+    float radius;
 };
 
 

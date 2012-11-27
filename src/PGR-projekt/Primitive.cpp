@@ -20,7 +20,7 @@ bool Plane::Intersect(Ray& ray, float& dist)
         float tmpDist = -(glm::dot(this->normal, ray.GetOrigin()) + this->distance) / dot;
         if (tmpDist > 0) //possible hit
         {
-            if (tmpDist < dist) //hit and coser than dist
+            if (tmpDist < dist) //hit and closer than dist
             {
                 dist = tmpDist;
                 return true;
@@ -63,5 +63,42 @@ bool Sphere::Intersect(Ray& ray, float& dist)
 			}
 		}
 	}
+	return false;
+}
+
+
+bool Particle::Intersect(Ray& ray, float& dist)
+{
+    //glm::vec3 normal(glm::normalize(ray.GetOrigin() - this->position)); 
+
+    float dotNormalDirection = glm::dot(normal, ray.GetDirection());
+    float dotNormalOrigin = glm::dot(normal, ray.GetOrigin());
+    float dotNormalPosition = glm::dot(normal, this->position);
+    if (dotNormalDirection != 0) //not parallel
+    {
+        // Compute the t value for the directed ray intersecting the plane
+        float t = (dotNormalPosition - dotNormalOrigin) / dotNormalDirection;
+
+        //ve have intersection
+        if (t >= 0.f/* && t <= 1.0f*/)
+        {
+            // scale the ray by t
+            glm::vec3 contactPoint(ray.GetOrigin() + (ray.GetDirection() * t));
+            
+            float distToCenter = sqrtf(glm::dot(contactPoint - this->position, contactPoint - this->position));
+
+            if (distToCenter < this->radius)
+            {
+                dist = glm::dot(normal, contactPoint - ray.GetOrigin());
+                //float c = 1-(((float)rand()/RAND_MAX/distToCenter/20)*radius);
+                float c = 1 - distToCenter/radius;
+                material.SetColor(glm::vec4(c, c, c, c));
+
+                return true;
+            }
+
+        }        
+    }
+
 	return false;
 }
