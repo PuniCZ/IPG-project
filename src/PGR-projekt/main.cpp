@@ -8,6 +8,7 @@
 
 #include "CameraPlane.h"
 #include "Raytracer.h"
+#include "PerlinNoise.h"
 
 
 
@@ -33,13 +34,19 @@ void PutPixel32(SDL_Surface * surface, int x, int y, Uint32 color)
 
 int main (int /*argc*/, char ** /*argv*/)
 {
+	PerlinNoise n;
+	unsigned char *x=n.generate(255,255,75,0.5f);
+
+
+
+
+
     // Init SDL - only video subsystem will be used
     if (SDL_Init(SDL_INIT_VIDEO) < 0) 
         return EXIT_FAILURE;
 
     // Shutdown SDL when program ends
-    atexit(SDL_Quit); double x=5;
-	double floorx=(double)((int)x);
+    atexit(SDL_Quit); 
     
     SDL_WM_SetCaption("Raytracing clouds", NULL);
 
@@ -47,6 +54,7 @@ int main (int /*argc*/, char ** /*argv*/)
 
     CameraPlane camera = CameraPlane(glm::vec3(0, 0 , -5), glm::vec3(0, 0, 0), glm::vec2(screen->w, screen->h));
     //camera.SetBgColor(glm::vec4(0.53f, 0.73f, 1.f, 1.f));
+    camera.SetUseSuperSampling(false);
 
     ScreenBuffer* buffer = camera.GetBuffer();
 

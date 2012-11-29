@@ -9,19 +9,23 @@ class Material
 {
 public:
     Material()
-        :color(1, 0, 1, 1), diffuse(0.2f), reflection(0.f)
+        :color(1, 0, 1, 1), diffuse(0.2f), reflection(0.f), refractionIndex(1.5f), refraction(0.f)
     { }
 
     Material(glm::vec4 color, float diffuse)
-        :color(color), diffuse(diffuse), reflection(0.f)
+        :color(color), diffuse(diffuse), reflection(0.f), refractionIndex(1.5f), refraction(0.f)
     { }
 
     Material(glm::vec4 color, float diffuse, float reflection)
-        :color(color), diffuse(diffuse), reflection(reflection)
+        :color(color), diffuse(diffuse), reflection(reflection), refractionIndex(1.5f), refraction(0.f)
+    { }
+
+    Material(glm::vec4 color, float diffuse, float reflection, float refraction,  float reafractionIndex)
+        :color(color), diffuse(diffuse), reflection(reflection), refraction(refraction), refractionIndex(reafractionIndex)
     { }
 
     Material(glm::vec4 color)
-        :color(color), diffuse(0.2f), reflection(0.f)
+        :color(color), diffuse(0.2f), reflection(0.f), refraction(0.f), refractionIndex(1.5f)
     { }
 
     ~Material() { };
@@ -46,10 +50,24 @@ public:
         this->reflection = reflection; 
     }
 
+    float GetRefraction() { return refraction; }
+    void SetRefraction(float refraction) 
+    { 
+        this->refraction = refraction; 
+    }
+
+    float GetRefractionIndex() { return refractionIndex; }
+    void SetRefractionIndex(float refractionIndex) 
+    { 
+        this->refractionIndex = refractionIndex; 
+    }
+
 private:
     glm::vec4 color;
     float diffuse;
     float reflection;
+    float refraction;
+    float refractionIndex;
 
 
 };
@@ -75,7 +93,7 @@ public:
 
 
     virtual glm::vec3 GetNormal(glm::vec3 dir) = 0;
-    virtual bool Intersect(Ray& ray, float& dist) = 0;
+    virtual int Intersect(Ray& ray, float& dist) = 0;
 
 
 protected:
@@ -109,7 +127,7 @@ public:
         normal = norm;
     }
 
-    bool Intersect(Ray& ray, float& dist);
+    int Intersect(Ray& ray, float& dist);
 
 private:
     glm::vec3 normal;
@@ -145,7 +163,7 @@ public:
         return (dir - this->position) * this->revRadius; 
     }
 
-    bool Intersect(Ray& ray, float& dist);
+    int Intersect(Ray& ray, float& dist);
 
 private:
     glm::vec3 position;
@@ -185,7 +203,7 @@ public:
         return normal; 
     }
 
-    bool Intersect(Ray& ray, float& dist);
+    int Intersect(Ray& ray, float& dist);
 
 private:
     glm::vec3 position;

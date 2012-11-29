@@ -12,7 +12,7 @@ Primitive::~Primitive(void)
 }
 
 
-bool Plane::Intersect(Ray& ray, float& dist)
+int Plane::Intersect(Ray& ray, float& dist)
 {
     float dot = glm::dot(this->normal, ray.GetDirection());
     if (dot != 0) //not parallel
@@ -23,16 +23,16 @@ bool Plane::Intersect(Ray& ray, float& dist)
             if (tmpDist < dist) //hit and closer than dist
             {
                 dist = tmpDist;
-                return true;
+                return INTERSECTION_RES_HIT_OUTSIDE;
             }
         }
     }
 
-	return false;
+	return INTERSECTION_RES_MISS;
 }
 
 
-bool Sphere::Intersect(Ray& ray, float& dist)
+int Sphere::Intersect(Ray& ray, float& dist)
 {    
     glm::vec3 v = ray.GetOrigin() - this->position;
     float b = -glm::dot(v, ray.GetDirection());
@@ -50,7 +50,7 @@ bool Sphere::Intersect(Ray& ray, float& dist)
 				if (i2 < dist) 
 				{
 					dist = i2;
-					return true; //inside
+					return INTERSECTION_RES_HIT_OUTSIDE; //inside
 				}
 			}
 			else
@@ -58,16 +58,16 @@ bool Sphere::Intersect(Ray& ray, float& dist)
 				if (i1 < dist)
 				{
 					dist = i1;
-					return true;
+					return INTERSECTION_RES_HIT_INSIDE;
 				}
 			}
 		}
 	}
-	return false;
+	return INTERSECTION_RES_MISS;
 }
 
 
-bool Particle::Intersect(Ray& ray, float& dist)
+int Particle::Intersect(Ray& ray, float& dist)
 {
     //glm::vec3 normal(glm::normalize(ray.GetOrigin() - this->position)); 
 
@@ -104,11 +104,11 @@ bool Particle::Intersect(Ray& ray, float& dist)
 
                 material.SetColor(glm::vec4(c, c, c, 1));
 
-                return true;
+                return INTERSECTION_RES_HIT_OUTSIDE;
             }
 
         }        
     }
 
-	return false;
+	return INTERSECTION_RES_MISS;
 }

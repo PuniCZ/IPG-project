@@ -37,6 +37,12 @@ public:
         bgColor = color;
     }
 
+    bool GetUseSuperSampling() { return useSuperSampling; }
+    void SetUseSuperSampling(bool use)
+    {
+        useSuperSampling = use;
+    }
+
 
 protected:
     glm::vec3 origin;
@@ -46,6 +52,8 @@ protected:
     ScreenBuffer buffer;
 
     glm::vec4 bgColor;
+
+    bool useSuperSampling;
     
 };
 
