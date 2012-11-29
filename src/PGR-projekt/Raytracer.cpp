@@ -77,21 +77,69 @@ glm::vec4 Raytracer::Raytrace(Scene& scene, Ray& ray, glm::vec4&color, int depth
                 if ((*it)->IsLigth())
                 {
                     Sphere* light = (Sphere*)*it;
-                    glm::vec3 L(glm::normalize(light->GetPosition() - pi));
-                    glm::vec3 N(hitObject->GetNormal(pi));
-                    if (hitObject->GetMaterial()->GetDiffuse() > 0.f)
-                    {
-                        float dot = glm::dot(N, L);
-                        if (dot > 0.f)
-                        {
-                            float diffFactor = dot * hitObject->GetMaterial()->GetDiffuse();
-                            tmpColor += diffFactor * hitObject->GetMaterial()->GetColor() * light->GetMaterial()->GetColor();
-                        }
-                    }
-                      
+                    glm::vec3 L(light->GetPosition() - pi);
+                    
+                    //point light source                    
+                    float shade = 1.0f;
+                    float tdist = LENGTH(L);
+					L *= (1.0f / tdist);
 
+                    Ray r = Ray(pi + L * EPSILON, L);
+					for (std::vector<Primitive*>::iterator it2 = scene.GetPrimitives()->begin(); it2 != scene.GetPrimitives()->end(); it2++)
+                    {
+						if (((*it2) != light) && ((*it2)->Intersect(r, tdist)))
+						{
+							shade = 0;
+							break;
+						}
+					}
+
+                    // calculate diffuse shading
+                    L = glm::normalize((light->GetPosition() - pi));
+				    glm::vec3 N = hitObject->GetNormal(pi);
+				    if ((*it)->GetMaterial()->GetDiffuse() > 0)
+				    {
+					    float dot = glm::dot(L, N);
+					    if (dot > 0)
+					    {
+						    float diff = dot * hitObject->GetMaterial()->GetDiffuse() * shade;
+						    // add diffuse component to ray color
+                            tmpColor += diff * light->GetMaterial()->GetColor() * hitObject->GetMaterial()->GetColor();
+					    }
+				    }
+
+                    // determine specular component
+				    if (hitObject->GetMaterial()->GetSpecular() > 0)
+				    {
+					    // point light source: sample once for specular highlight
+					    glm::vec3 V(ray.GetDirection());
+                        glm::vec3 R(L - 2.0f * glm::dot(L, N) * N);
+					    float dot = glm::dot(V, R);
+					    if (dot > 0)
+					    {
+						    float spec = powf( dot, 20 ) * hitObject->GetMaterial()->GetSpecular() * shade;
+						    // add specular component to ray color
+						    tmpColor += spec * light->GetMaterial()->GetColor();
+					    }
+				    }
                 }
-            }
+            } //end lights
+
+            // calculate reflection
+		    float refl = hitObject->GetMaterial()->GetReflection();
+		    if (refl > 0.0f)
+		    {
+			    glm::vec3 N(hitObject->GetNormal(pi));
+			    glm::vec3 R(ray.GetDirection() - 2.0f * glm::dot(ray.GetDirection(), N) * N);
+                if (depth < TRACEDEPTH) 
+			    {
+				    glm::vec4 rcol(0, 0, 0, 0);
+                    float dist = INT_MAX;
+				    rcol = Raytrace(scene, Ray( pi + R * EPSILON, R ), rcol, depth + 1, dist);
+				    tmpColor += refl * rcol * hitObject->GetMaterial()->GetColor();
+			    }
+		    }
+
         }
     }
 

@@ -3,6 +3,7 @@
 #include "CameraPlane.h"
 #include "Ray.h"
 #include "Scene.h"
+#include "Defines.h"
 
 class Raytracer
 {

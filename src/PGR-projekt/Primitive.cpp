@@ -85,7 +85,7 @@ bool Particle::Intersect(Ray& ray, float& dist)
             // scale the ray by t
             glm::vec3 contactPoint(ray.GetOrigin() + (ray.GetDirection() * t));
             
-            float distToCenter = sqrtf(glm::dot(contactPoint - this->position, contactPoint - this->position));
+            float distToCenter = LENGTH(contactPoint);
 
             if (distToCenter < this->radius)
             {

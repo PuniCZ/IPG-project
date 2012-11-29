@@ -8,6 +8,15 @@
 
 #define SHADE_RESOLUTION 32
 
+#define LENGTH(A)		(sqrtf(A.x*A.x+A.y*A.y+A.z*A.z))
+#define EPSILON			0.0001f
+#define TRACEDEPTH		6
+
+
+
+
+
+
 
 #define PI (4.0f * (float) atan(1.0f))
 #define INV_PI (1.0f / PI)

@@ -46,7 +46,7 @@ int main (int /*argc*/, char ** /*argv*/)
     SDL_Surface *screen = SDL_SetVideoMode( 800 , 600 , 32 , SDL_HWSURFACE |SDL_ANYFORMAT); // | SDL_DOUBLEBUF
 
     CameraPlane camera = CameraPlane(glm::vec3(0, 0 , -5), glm::vec3(0, 0, 0), glm::vec2(screen->w, screen->h));
-    camera.SetBgColor(glm::vec4(0.53f, 0.73f, 1.f, 1.f));
+    //camera.SetBgColor(glm::vec4(0.53f, 0.73f, 1.f, 1.f));
 
     ScreenBuffer* buffer = camera.GetBuffer();
 

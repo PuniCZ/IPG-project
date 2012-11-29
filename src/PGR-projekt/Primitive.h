@@ -3,20 +3,25 @@
 #include <glm\glm.hpp>
 #include "Ray.h"
 #include "Utils.h"
+#include "Defines.h"
 
 class Material
 {
 public:
     Material()
-        :color(1, 0, 1, 1), diffuse(0.2f)
+        :color(1, 0, 1, 1), diffuse(0.2f), reflection(0.f)
     { }
 
     Material(glm::vec4 color, float diffuse)
-        :color(color), diffuse(diffuse)
+        :color(color), diffuse(diffuse), reflection(0.f)
+    { }
+
+    Material(glm::vec4 color, float diffuse, float reflection)
+        :color(color), diffuse(diffuse), reflection(reflection)
     { }
 
     Material(glm::vec4 color)
-        :color(color), diffuse(0.2f)
+        :color(color), diffuse(0.2f), reflection(0.f)
     { }
 
     ~Material() { };
@@ -28,10 +33,23 @@ public:
     }
 
     float GetDiffuse() { return diffuse; }
+    void SetDiffuse(float diffuse) 
+    { 
+        this->diffuse = diffuse; 
+    }
+
+    float GetSpecular() { return 1.0f - diffuse; }
+
+    float GetReflection() { return reflection; }
+    void SetReflection(float reflection) 
+    { 
+        this->reflection = reflection; 
+    }
 
 private:
     glm::vec4 color;
     float diffuse;
+    float reflection;
 
 
 };
