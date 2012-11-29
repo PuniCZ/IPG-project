@@ -5,6 +5,36 @@
 #include "Scene.h"
 #include "Defines.h"
 
+class RaytracerResult
+{
+public:
+    RaytracerResult(Primitive* prim, int refl, int lighs)
+        :primitive(prim), numOfReflectedPrimitoves(refl), numOfVisibleLights(lighs)
+    { }
+
+     RaytracerResult()
+        :primitive(NULL), numOfReflectedPrimitoves(0), numOfVisibleLights(0)
+    { }
+
+    Primitive* primitive;
+    int numOfReflectedPrimitoves;
+    int numOfVisibleLights;
+
+    bool operator==(const RaytracerResult& another)
+	{
+        return 
+            this->numOfReflectedPrimitoves == another.numOfReflectedPrimitoves && 
+            this->numOfVisibleLights == another.numOfVisibleLights && 
+            this->primitive == another.primitive;
+	}
+
+    bool operator!=(const RaytracerResult& another)
+	{
+        return !(this==&another);
+	}
+};
+
+
 class Raytracer
 {
 public:
@@ -13,7 +43,7 @@ public:
 
     bool Render(Scene& scene);
 
-    glm::vec4 Raytrace(Scene& scene, Ray& ray, glm::vec4&color, int depth, float& distance);
+    RaytracerResult Raytrace(Scene& scene, Ray& ray, glm::vec4&color, int depth, float& distance, float refractionIndex);
 	int getCurrentLine(){return curLine;};
 
 private:
