@@ -38,8 +38,8 @@ int main (int /*argc*/, char ** /*argv*/)
         return EXIT_FAILURE;
 
     // Shutdown SDL when program ends
-    atexit(SDL_Quit);
-
+    atexit(SDL_Quit); double x=5;
+	double floorx=(double)((int)x);
     
     SDL_WM_SetCaption("Raytracing clouds", NULL);
 
