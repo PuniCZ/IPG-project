@@ -47,6 +47,7 @@ int main (int /*argc*/, char ** /*argv*/)
 
     CameraPlane camera = CameraPlane(glm::vec3(0, 0 , -5), glm::vec3(0, 0, 0), glm::vec2(screen->w, screen->h));
     //camera.SetBgColor(glm::vec4(0.53f, 0.73f, 1.f, 1.f));
+    camera.SetUseSuperSampling(false);
 
     ScreenBuffer* buffer = camera.GetBuffer();
 

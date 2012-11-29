@@ -93,7 +93,7 @@ RaytracerResult Raytracer::Raytrace(Scene& scene, Ray& ray, glm::vec4&color, int
         if (hitObject->IsLigth())
         {
             //looking into light
-            tmpColor = hitObject->GetMaterial()->GetColor();
+            tmpColor += hitObject->GetMaterial()->GetColor();
         }
         else
         {
