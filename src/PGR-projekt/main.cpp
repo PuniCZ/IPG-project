@@ -83,10 +83,10 @@ int main (int /*argc*/, char ** /*argv*/)
             }
         }
         // update the screen buffer	
-		//SDL_Flip(screen);
-		SDL_UpdateRect(screen, 0, 0,  screen->w,  screen->h);
-		}
-		
+        //SDL_Flip(screen);
+        SDL_UpdateRect(screen, 0, 0,  screen->w,  screen->h);
+        }
+        
     }
 
 

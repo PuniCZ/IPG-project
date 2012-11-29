@@ -21,17 +21,17 @@ public:
     int numOfVisibleLights;
 
     bool operator==(const RaytracerResult& another)
-	{
+    {
         return 
             this->numOfReflectedPrimitoves == another.numOfReflectedPrimitoves && 
             this->numOfVisibleLights == another.numOfVisibleLights && 
             this->primitive == another.primitive;
-	}
+    }
 
     bool operator!=(const RaytracerResult& another)
-	{
+    {
         return !(this==&another);
-	}
+    }
 };
 
 
@@ -44,7 +44,10 @@ public:
     bool Render(Scene& scene);
 
     RaytracerResult Raytrace(Scene& scene, Ray& ray, glm::vec4&color, int depth, float& distance, float refractionIndex);
-	int getCurrentLine(){return curLine;};
+    int getCurrentLine(){return curLine;};
+
+
+    
 
 private:
     CameraPlane* camera;

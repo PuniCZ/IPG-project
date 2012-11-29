@@ -10,11 +10,11 @@
 
 #define LENGTH(A)		(sqrtf(A.x*A.x+A.y*A.y+A.z*A.z))
 #define EPSILON			0.0001f
-#define TRACEDEPTH		6
+#define TRACEDEPTH                       6
 #define INTERSECTION_RES_HIT_INSIDE     -1
 #define INTERSECTION_RES_HIT_OUTSIDE     1
 #define INTERSECTION_RES_MISS            0
-
+#define GRIDSIZE                        16
 
 
 
