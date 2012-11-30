@@ -38,26 +38,29 @@ public:
 class Raytracer
 {
 public:
-    Raytracer(CameraPlane* camera);
+    Raytracer(CameraPlane* camera, Scene& scene);
     ~Raytracer(void);
 
-    bool Render(Scene& scene);
+    bool Render();
 
-    RaytracerResult Raytrace(Scene& scene, Ray& ray, glm::vec4&color, int depth, float& distance, float refractionIndex);
+    RaytracerResult Raytrace(Ray& ray, glm::vec4&color, int depth, float& distance, float refractionIndex);
     int getCurrentLine(){return curLine;};
 
 
-    
+    int FindNearest(Ray& ray, float& dist, Primitive*& primitive);
+    RaytracerResult Raytracer::RenderRay(glm::vec3& screenPos, glm::vec4& color);
 
 private:
     CameraPlane* camera;
+    Scene& scene;
 
+    //rendering
     float screenX1, screenX2, screenY1, screenY2;
     float screenDiffX, screenDiffY;
-
     float posX, posY;
-
     int curLine;
 
+    //grid stepping
+    glm::vec3 cellSizeRev, cellSize;
 };
 

@@ -16,6 +16,8 @@
 #define INTERSECTION_RES_MISS            0
 #define GRIDSIZE                        16
 
+//#define USE_GRID
+
 
 
 

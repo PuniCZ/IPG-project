@@ -69,9 +69,12 @@ void Scene::Init()
 void Scene::BuildGrid()
 {
     // initialize regular grid
-    grid = new std::list<Primitive*>*[GRIDSIZE * GRIDSIZE * GRIDSIZE];
+    grid = new ObjectList*[GRIDSIZE * GRIDSIZE * GRIDSIZE];
     memset(grid, 0, GRIDSIZE * GRIDSIZE * GRIDSIZE * sizeof(std::list<Primitive*>*));
     glm::vec3 p1(-14, -5, -6), p2( 14, 8, 30 ); //TODO: World boundaries
+
+    //glm::vec3 p1(-20, -20, -20), p2( 20, 20, 30 ); //TODO: World boundaries
+
     // calculate cell width, height and depth
     float dx = (p2.x - p1.x) / GRIDSIZE, dx_reci = 1.0f / dx;
     float dy = (p2.y - p1.y) / GRIDSIZE, dy_reci = 1.0f / dy;
@@ -106,8 +109,11 @@ void Scene::BuildGrid()
             if ((*it)->IntersectBox(cell))
             {
                 // object intersects cell; add to object list
-                std::list<Primitive*>* l = new std::list<Primitive*>();
-                l->push_back(*it);
+                ObjectList* l = new ObjectList();
+                l->SetPrimitive(*it);
+                l->SetNext(grid[idx]);
+                if (l->GetNext())
+                    l->GetNext();
                 grid[idx] = l;
             }
         }

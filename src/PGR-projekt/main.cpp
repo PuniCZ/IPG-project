@@ -55,7 +55,7 @@ int main (int /*argc*/, char ** /*argv*/)
 
     scene.Init();
 
-    Raytracer raytracer = Raytracer(&camera);
+    Raytracer raytracer = Raytracer(&camera, scene);
     
     //raytracer.Render(scene);
 
@@ -72,7 +72,7 @@ int main (int /*argc*/, char ** /*argv*/)
         }
 
         if (!renderFinished)
-        {    renderFinished = raytracer.Render(scene);
+        {    renderFinished = raytracer.Render();
 
         for (int i = 0; i < screen->w ; i++)
         {

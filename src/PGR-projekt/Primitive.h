@@ -105,6 +105,8 @@ public:
                 (pos.z > (v1.z - EPSILON)) && (pos.z < (v2.z + EPSILON)));
     }
 
+    int Intersect(Ray& ray, float& dist);
+
 private:
     glm::vec3 position;
     glm::vec3 size;
@@ -129,6 +131,8 @@ public:
         isLight = is; 
     }
 
+    int GetRayId() { return rayID; }
+
 
     virtual glm::vec3 GetNormal(glm::vec3 dir) = 0;
     virtual int Intersect(Ray& ray, float& dist) = 0;
@@ -139,6 +143,7 @@ public:
 protected:
     Material material;
     bool isLight;
+    int rayID;
 };
 
 class Plane : public Primitive

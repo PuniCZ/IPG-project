@@ -2,7 +2,7 @@
 #include <iostream>
 
 Primitive::Primitive(void)
-    :isLight(false)
+    :isLight(false), rayID(0)
 {
 }
 
@@ -205,4 +205,52 @@ GridBox Particle::GetBoundingBox()
 {
     //using sphere aproximation
     return GridBox(position - glm::vec3(radius), glm::vec3(radius) * 2.f);
+}
+
+
+int GridBox::Intersect(Ray& ray, float& distance)
+{
+    //m_RayID = a_Ray.GetID();
+    float dist[6];
+    glm::vec3 ip[6], d = ray.GetDirection(), o = ray.GetOrigin();
+    bool retval = INTERSECTION_RES_MISS;
+    for ( int i = 0; i < 6; i++ ) 
+        dist[i] = -1.f;
+    glm::vec3 v1 = this->position, v2 = this->position + this->size;
+    if (d.x) 
+    {
+        float rc = 1.0f / d.x;
+        dist[0] = (v1.x - o.x) * rc;
+        dist[3] = (v2.x - o.x) * rc;
+    }
+    if (d.y) 
+    {
+        float rc = 1.0f / d.y;
+        dist[1] = (v1.y - o.y) * rc;
+        dist[4] = (v2.y - o.y) * rc;
+    }
+    if (d.z) 
+    {
+        float rc = 1.0f / d.z;
+        dist[2] = (v1.z - o.z) * rc;
+        dist[5] = (v2.z - o.z) * rc;
+    }
+    for (int i = 0; i < 6; i++ )
+    {
+        if (dist[i] > 0)
+        {
+            ip[i] = o + dist[i] * d;
+            if ((ip[i].x > (v1.x - EPSILON)) && (ip[i].x < (v2.x + EPSILON)) && 
+                (ip[i].y > (v1.y - EPSILON)) && (ip[i].y < (v2.y + EPSILON)) &&
+                (ip[i].z > (v1.z - EPSILON)) && (ip[i].z < (v2.z + EPSILON)))
+            {
+                if (dist[i] < distance) 
+                {
+                    distance = dist[i];
+                    retval = INTERSECTION_RES_HIT_OUTSIDE;
+                }
+            }
+        }
+    }
+    return retval;
 }
