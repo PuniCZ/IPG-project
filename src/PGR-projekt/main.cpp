@@ -69,6 +69,15 @@ int main (int /*argc*/, char ** /*argv*/)
             if (event.type == SDL_QUIT) {
             done=true;
             }
+            if (event.type == SDL_KEYDOWN)
+            {
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_f:
+                        scene.SetFogFactor((scene.GetFogFactor() > 0.f) ? 0.f : 0.2f);
+                        break;
+                }
+            }
         }
 
         if (!renderFinished)

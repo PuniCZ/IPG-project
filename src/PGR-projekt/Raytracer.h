@@ -8,17 +8,18 @@
 class RaytracerResult
 {
 public:
-    RaytracerResult(Primitive* prim, int refl, int lighs)
-        :primitive(prim), numOfReflectedPrimitoves(refl), numOfVisibleLights(lighs)
+    RaytracerResult(Primitive* prim, int refl, int lighs, float distance)
+        :primitive(prim), numOfReflectedPrimitoves(refl), numOfVisibleLights(lighs), distance(distance)
     { }
 
      RaytracerResult()
-        :primitive(NULL), numOfReflectedPrimitoves(0), numOfVisibleLights(0)
+         :primitive(NULL), numOfReflectedPrimitoves(0), numOfVisibleLights(0), distance(0.f)
     { }
 
     Primitive* primitive;
     int numOfReflectedPrimitoves;
     int numOfVisibleLights;
+    float distance;
 
     bool operator==(const RaytracerResult& another)
     {
@@ -51,6 +52,9 @@ public:
     RaytracerResult Raytracer::RenderRay(glm::vec3& screenPos, glm::vec4& color);
 
 private:
+
+    void applyFog(glm::vec4& color, float distance);
+
     CameraPlane* camera;
     Scene& scene;
 

@@ -33,13 +33,21 @@ private:
 class Scene
 {
 public:
-    Scene(void);
+    Scene(void)
+        : fogFactor(0.2f)
+    { }
     ~Scene(void);
 
     std::vector<Primitive*>* GetPrimitives() { return &primitives; }
     std::list<Primitive*>* GetLigths() { return &lights; }
     GridBox& GetBoundigBox() { return boundingBox; }
     ObjectList** GetGrid() { return grid; }
+
+    float GetFogFactor() { return fogFactor; }
+    void SetFogFactor(float factor)
+    {
+        fogFactor = factor;
+    }
 
     void Init();
     void BuildGrid();
@@ -50,5 +58,7 @@ private:
     ObjectList** grid;
     std::list<Primitive*> lights;
     GridBox boundingBox;
+
+    float fogFactor;
 };
 

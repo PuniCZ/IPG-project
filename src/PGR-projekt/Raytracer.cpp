@@ -67,6 +67,8 @@ bool Raytracer::Render()
                 color = tmpColor / 4;
             }
 
+            applyFog(color, hitResult.distance);
+
             color = glm::clamp(color, 0.f, 1.f);
             camera->GetBuffer()->SetPixel(x, y, color);
             posX += screenDiffX;
@@ -223,7 +225,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
 
 
     color = tmpColor;
-    return RaytracerResult(hitObject, reflectedObjects, visibleLights);
+    return RaytracerResult(hitObject, reflectedObjects, visibleLights, distance);
 }
 
 
@@ -425,4 +427,17 @@ RaytracerResult Raytracer::RenderRay(glm::vec3& screenPos, glm::vec4& color)
     }
     float dist = INT_MAX;
     return Raytrace(r, color, 1, dist, 1.0f);
+}
+
+
+void Raytracer::applyFog(glm::vec4& color, float distance)
+{
+    if (scene.GetFogFactor() <= 0.f)
+        return;
+
+    glm::vec4 fogColor(.6f, .6f, .6f, 1.f);
+    fogColor += RAND(0.02f) - 0.01f;
+    float f = expf(-distance * scene.GetFogFactor());
+    color = f * color + (1 - f) * fogColor;
+
 }
