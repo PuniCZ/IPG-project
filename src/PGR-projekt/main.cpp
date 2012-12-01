@@ -34,8 +34,7 @@ void PutPixel32(SDL_Surface * surface, int x, int y, Uint32 color)
 
 int main (int /*argc*/, char ** /*argv*/)
 {
-	PerlinNoise n;
-	unsigned char *x=n.generate(255,255,75,0.5f);
+
 
 
 
@@ -90,10 +89,10 @@ int main (int /*argc*/, char ** /*argv*/)
             }
         }
         // update the screen buffer	
-		//SDL_Flip(screen);
-		SDL_UpdateRect(screen, 0, 0,  screen->w,  screen->h);
-		}
-		
+        //SDL_Flip(screen);
+        SDL_UpdateRect(screen, 0, 0,  screen->w,  screen->h);
+        }
+        
     }
 
 

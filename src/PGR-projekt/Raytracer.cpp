@@ -181,7 +181,7 @@ RaytracerResult Raytracer::Raytrace(Scene& scene, Ray& ray, glm::vec4&color, int
                 {
                     glm::vec3 T((n * ray.GetDirection()) + (n * cosI - sqrtf( cosT2 )) * N);
                     glm::vec4 rcol(0);
-                    float dist;
+                    float dist=INT_MAX;
                     Raytrace(scene, Ray( pi + T * EPSILON, T ), rcol, depth + 1, rindex, dist);
                     // apply Beer's law
                     glm::vec4 absorbance = hitObject->GetMaterial()->GetColor() * 0.15f * -dist;

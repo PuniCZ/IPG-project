@@ -10,11 +10,11 @@
 
 #define LENGTH(A)		(sqrtf(A.x*A.x+A.y*A.y+A.z*A.z))
 #define EPSILON			0.0001f
-#define TRACEDEPTH		6
+#define TRACEDEPTH                       6
 #define INTERSECTION_RES_HIT_INSIDE     -1
 #define INTERSECTION_RES_HIT_OUTSIDE     1
 #define INTERSECTION_RES_MISS            0
-
+#define GRIDSIZE                        16
 
 
 
@@ -32,3 +32,10 @@
 
 #define CLOUD_AMBIENT_COLOR glm::vec4(0.3f, 0.3f, 0.3f, 1)
 
+#define RAND_MODULO 20000
+#define DEFAULT_PERLIN_NOISE_OCTAVES 6
+#define GENERATING_TEXTURE_INFO 1
+#define DEFAULT_PERLIN_PERSISTANCE 1.0/sqrt(2.0f)
+#define DEFAULT_PERLIN_ZOOM  80 //200
+#define DEFAULT_PERLIN_SHARPENESS 0.5f
+#define DEFAULT_PERLIN_TEXTURE_COVER 128

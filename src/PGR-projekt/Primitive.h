@@ -4,6 +4,7 @@
 #include "Ray.h"
 #include "Utils.h"
 #include "Defines.h"
+#include "PerlinNoise.h"
 
 class Material
 {
@@ -73,6 +74,119 @@ private:
 };
 
 
+class GridBox
+{
+public:
+    GridBox() 
+        : size(0.f), position(0.f)
+    { }
+
+    GridBox(glm::vec3& position, glm::vec3& size) 
+        : size(size), position(position)
+    { }
+
+    glm::vec3& GetPos() { return position; }
+
+    glm::vec3& GetSize() { return size; }
+
+    bool Intersect(GridBox& box)
+    {
+        glm::vec3 v1 = box.GetPos(), v2 = box.GetPos() + box.GetSize();
+        glm::vec3 v3 = position, v4 = position + size;
+        return ((v4.x > v1.x) && (v3.x < v2.x) &&  // x overlap
+                (v4.y > v1.y) && (v3.y < v2.y) &&  // y overlap
+                (v4.z > v1.z) && (v3.z < v2.z));   // z overlap
+    }
+
+    bool Contains(glm::vec3 pos)
+    {
+        glm::vec3 v1 = position, v2 = position + size;
+        return ((pos.x > (v1.x - EPSILON)) && (pos.x < (v2.x + EPSILON)) &&
+                (pos.y > (v1.y - EPSILON)) && (pos.y < (v2.y + EPSILON)) &&
+                (pos.z > (v1.z - EPSILON)) && (pos.z < (v2.z + EPSILON)));
+    }
+
+private:
+    glm::vec3 position;
+    glm::vec3 size;
+};
+
+class Texture
+{
+public:
+	Texture(void) 
+        : width(256), height(256), enabled(false)
+    { }
+
+	Texture(bool enabled) 
+        : width(256), height(256), enabled(enabled)
+    { }
+
+    Texture(int width, int height, bool enabled) 
+        : width(width), height(height), enabled(enabled)
+    { }
+
+    Texture(int width, int height) 
+        : width(width), height(height), enabled(false)
+    { }
+
+
+	~Texture(void)
+    {
+        if(this->tex!=NULL)
+            delete [] tex;
+    }
+
+    void setSize(int width, int height)
+    { 
+        this->width=width;
+        this->height=height;
+    }
+
+    void setHeight(int height) { this->height = height; }
+    void setWidth(int width) { this->width = width;}
+    int getWidth(void) { return this->width; }   
+    int getHeight(void) { return this->height; }
+
+    bool isEnabled(void) { return this->enabled; }
+    void setEnabled(bool enabled) { this->enabled = enabled;}
+
+    void setSmoothNoise(bool smooth) { this->noise.setSmoothNoise(smooth); } //if true consume more CPU then default noise
+
+    void setExpCurve(bool curve) { this->noise.setExpCurve(curve); }
+    void setExpCurve(bool curve,int texCover, double texSharpness) { this->noise.setExpCurve(curve, texCover, texSharpness); }
+    void setExpCurve(int texCover, double texSharpness) { this->noise.setExpCurve(texCover, texSharpness); }
+
+    void setZoom(int zoom){ this->noise.setZoom(zoom);}
+    void setPersistance(double persistance) {this->noise.setPersistance(persistance);}
+    void setZoomPersistance(int zoom, double persistance){ this->noise.setZoomPersistance(zoom, persistance);}
+    
+    unsigned char *getTexture(void)
+    {
+        if(!this->enabled)
+            return NULL;
+        else
+            return tex;
+    }
+
+
+
+    void generateTexture(void)
+    {
+        if(this->enabled)
+        {
+           //tex=noise.generate(width, height);
+        }
+    }
+
+private:
+    int width;
+    int height;
+    bool enabled;
+    PerlinNoise noise;
+    unsigned char* tex;
+};
+
 class Primitive
 {
 public:
@@ -91,14 +205,22 @@ public:
         isLight = is; 
     }
 
+    Texture* GetTexture() { return &texture; }
+    void SetTexture(Texture tex) 
+    {
+        this->texture = tex;
+    }
 
     virtual glm::vec3 GetNormal(glm::vec3 dir) = 0;
     virtual int Intersect(Ray& ray, float& dist) = 0;
+    virtual bool IntersectBox(GridBox& box) = 0;
+    virtual GridBox GetBoundingBox() = 0;
 
 
 protected:
     Material material;
     bool isLight;
+    Texture texture;
 };
 
 class Plane : public Primitive
@@ -128,6 +250,8 @@ public:
     }
 
     int Intersect(Ray& ray, float& dist);
+    bool IntersectBox(GridBox& box);
+    GridBox GetBoundingBox();
 
 private:
     glm::vec3 normal;
@@ -164,6 +288,8 @@ public:
     }
 
     int Intersect(Ray& ray, float& dist);
+    bool IntersectBox(GridBox& box);
+    GridBox GetBoundingBox();
 
 private:
     glm::vec3 position;
@@ -178,12 +304,12 @@ public:
     Particle(glm::vec3 position, glm::vec3 normal, float radius)
         :position(position), radius(radius), normal(normal)
     {
-        texture = Utils::CreateGaussianMap(256);
+
     }
 
     ~Particle(void) 
     { 
-        delete[] texture;
+
     };
 
     float GetRadius() { return radius; }
@@ -204,13 +330,15 @@ public:
     }
 
     int Intersect(Ray& ray, float& dist);
+    bool IntersectBox(GridBox& box);
+    GridBox GetBoundingBox();
+
 
 private:
     glm::vec3 position;
     glm::vec3 normal;
     float radius;
     
-    unsigned char* texture;
 };
 
 
