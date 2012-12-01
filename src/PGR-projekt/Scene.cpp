@@ -1,10 +1,6 @@
 #include "Scene.h"
 
 
-Scene::Scene(void)
-{
-}
-
 
 Scene::~Scene(void)
 {
@@ -37,37 +33,34 @@ void Scene::Init()
     primitives.back()->SetMaterial(Material(glm::vec4(.4f, .3f, .3f, 1), 1.f));
 
     //big sphere
-    //primitives.push_back(new Sphere(glm::vec3(1, -.8f, 3), 2.5f));
-    //primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 1), 0.2f, 0.6f));
+    primitives.push_back(new Sphere(glm::vec3(1, -.8f, 3), 2.5f));
+    primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 1), 0.2f, 0.6f));
     
     //small sphere
-    /*primitives.push_back(new Sphere(glm::vec3(-5.5f, -.5f, 7), 2.0f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, 1.f, 1), 0.1f, 1.f));*/
+    primitives.push_back(new Sphere(glm::vec3(-5.5f, -.5f, 7), 2.0f));
+    primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, 1.f, 1), 0.1f, 1.f));
 
     //light 1
     primitives.push_back(new Sphere(glm::vec3(0, 5, 5), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.4f, .4f, .4f, 1)));
     primitives.back()->SetLigth(true);
 
-    /*//light 2
+    //light 2
     primitives.push_back(new Sphere(glm::vec3(2, 5, 1), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.6f, .6f, .8f, 1)));
-    primitives.back()->SetLigth(true);*/
+    primitives.back()->SetLigth(true);
 
 
     /*primitives.push_back(new Sphere(glm::vec3(0, 0, -1), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.9f, .9f, .9f, 1), 10));
     primitives.back()->SetLigth(true);*/
 
-    primitives.push_back(new Particle(glm::vec3(-5.5f, 1.5f, 5), glm::vec3(0, 0, 1), 3.5f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.4f, 2.f, .4f, 0.8f), 0.8f));
-
-	primitives.push_back(new Particle(glm::vec3(-0.0f, 1.5f, 5.1f), glm::vec3(0, 0, 1), 3.5f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.4f, 2.f, .4f, 0.8f), 1.0f));
-
-	primitives.push_back(new Particle(glm::vec3(5.0f, 1.5f, 5.2f), glm::vec3(0, 0, 1), 3.5f));
-    primitives.back()->SetMaterial(Material(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0.8f));
-
+    primitives.push_back(new Particle(glm::vec3(-5.5f, 1.5f, 5), glm::vec3(0, 0, 1), 2.0f));
+    primitives.back()->SetMaterial(Material(glm::vec4(.2f, 1.f, .2f, 1), .6f));
+    primitives.back()->SetTexture(Texture(255,255,true));
+    //primitives.back()->GetTexture()->setExpCurve(true,20,0.5f);  //optional 0-255, 0.0f-1.0f vytvari vetsi diry v mraku
+    //primitives.back()->GetTexture()->setZoom(200);                //optional
+    primitives.back()->GetTexture()->generateTexture();
 
     BuildGrid();
 }
@@ -75,9 +68,12 @@ void Scene::Init()
 void Scene::BuildGrid()
 {
     // initialize regular grid
-    grid = new std::list<Primitive*>*[GRIDSIZE * GRIDSIZE * GRIDSIZE];
+    grid = new ObjectList*[GRIDSIZE * GRIDSIZE * GRIDSIZE];
     memset(grid, 0, GRIDSIZE * GRIDSIZE * GRIDSIZE * sizeof(std::list<Primitive*>*));
     glm::vec3 p1(-14, -5, -6), p2( 14, 8, 30 ); //TODO: World boundaries
+
+    //glm::vec3 p1(-20, -20, -20), p2( 20, 20, 30 ); //TODO: World boundaries
+
     // calculate cell width, height and depth
     float dx = (p2.x - p1.x) / GRIDSIZE, dx_reci = 1.0f / dx;
     float dy = (p2.y - p1.y) / GRIDSIZE, dy_reci = 1.0f / dy;
@@ -112,8 +108,11 @@ void Scene::BuildGrid()
             if ((*it)->IntersectBox(cell))
             {
                 // object intersects cell; add to object list
-                std::list<Primitive*>* l = new std::list<Primitive*>();
-                l->push_back(*it);
+                ObjectList* l = new ObjectList();
+                l->SetPrimitive(*it);
+                l->SetNext(grid[idx]);
+                if (l->GetNext())
+                    l->GetNext();
                 grid[idx] = l;
             }
         }

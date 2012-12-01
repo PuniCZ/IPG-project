@@ -61,7 +61,7 @@ int main (int /*argc*/, char ** /*argv*/)
 
     scene.Init();
 
-    Raytracer raytracer = Raytracer(&camera);
+    Raytracer raytracer = Raytracer(&camera, scene);
     
     //raytracer.Render(scene);
 
@@ -75,10 +75,19 @@ int main (int /*argc*/, char ** /*argv*/)
             if (event.type == SDL_QUIT) {
             done=true;
             }
+            if (event.type == SDL_KEYDOWN)
+            {
+                switch (event.key.keysym.sym)
+                {
+                    case SDLK_f:
+                        scene.SetFogFactor((scene.GetFogFactor() > 0.f) ? 0.f : 0.2f);
+                        break;
+                }
+            }
         }
 
         if (!renderFinished)
-        {    renderFinished = raytracer.Render(scene);
+        {    renderFinished = raytracer.Render();
 
         for (int i = 0; i < screen->w ; i++)
         {

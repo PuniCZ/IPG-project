@@ -12,6 +12,11 @@ public:
     glm::vec3 GetDirection() { return direction; }
     glm::vec3 GetOrigin() { return origin; }
 
+    void SetOrigin(glm::vec3& origin)
+    {
+        this->origin = origin;
+    }
+
 
 protected:
     glm::vec3 origin;

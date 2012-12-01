@@ -35,7 +35,6 @@ private:
 
     bool curve;
     bool smooth;
-    double frequency;
     double persistance;
     double texSharpness;
     int texCover;

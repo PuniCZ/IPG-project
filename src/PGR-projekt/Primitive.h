@@ -106,6 +106,8 @@ public:
                 (pos.z > (v1.z - EPSILON)) && (pos.z < (v2.z + EPSILON)));
     }
 
+    int Intersect(Ray& ray, float& dist);
+
 private:
     glm::vec3 position;
     glm::vec3 size;
@@ -115,25 +117,25 @@ class Texture
 {
 public:
 	Texture(void) 
-        : width(256), height(256), enabled(false)
+        : width(256), height(256), enabled(false), tex(NULL)
     { }
 
 	Texture(bool enabled) 
-        : width(256), height(256), enabled(enabled)
+        : width(256), height(256), enabled(enabled), tex(NULL)
     { }
 
     Texture(int width, int height, bool enabled) 
-        : width(width), height(height), enabled(enabled)
+        : width(width), height(height), enabled(enabled), tex(NULL)
     { }
 
     Texture(int width, int height) 
-        : width(width), height(height), enabled(false)
+        : width(width), height(height), enabled(false), tex(NULL)
     { }
 
 
 	~Texture(void)
     {
-        if(this->tex!=NULL)
+        if(this->enabled)
             delete [] tex;
     }
 
@@ -175,7 +177,7 @@ public:
     {
         if(this->enabled)
         {
-           //tex=noise.generate(width, height);
+           tex=noise.generate(width, height);
         }
     }
 
@@ -205,11 +207,13 @@ public:
         isLight = is; 
     }
 
+    int GetRayId() { return rayID; }
     Texture* GetTexture() { return &texture; }
     void SetTexture(Texture tex) 
     {
         this->texture = tex;
     }
+
 
     virtual glm::vec3 GetNormal(glm::vec3 dir) = 0;
     virtual int Intersect(Ray& ray, float& dist) = 0;
@@ -220,6 +224,7 @@ public:
 protected:
     Material material;
     bool isLight;
+    int rayID;
     Texture texture;
 };
 
