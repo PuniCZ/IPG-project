@@ -54,6 +54,7 @@ public:
 private:
 
     void applyFog(glm::vec4& color, float distance);
+    void applyFarFilter(glm::vec4& color, float distance);
 
     CameraPlane* camera;
     Scene& scene;

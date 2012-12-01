@@ -67,7 +67,9 @@ bool Raytracer::Render()
                 color = tmpColor / 4;
             }
 
+            applyFarFilter(color, hitResult.distance);
             applyFog(color, hitResult.distance);
+            
 
             color = glm::clamp(color, 0.f, 1.f);
             camera->GetBuffer()->SetPixel(x, y, color);
@@ -441,3 +443,16 @@ void Raytracer::applyFog(glm::vec4& color, float distance)
     color = f * color + (1 - f) * fogColor;
 
 }
+
+void Raytracer::applyFarFilter(glm::vec4& color, float distance)
+{
+    if (distance - scene.GetFarDistance() < 0.f)
+        return;
+
+    glm::vec4 farColor(.2f, .4f, .6f, 1.f);
+    //farColor += RAND(0.02f) - 0.01f;
+    float f = expf(-(distance - scene.GetFarDistance()) * 0.01);
+    color = f * color + (1 - f) * farColor;
+
+}
+

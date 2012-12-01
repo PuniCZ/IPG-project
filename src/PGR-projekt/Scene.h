@@ -34,7 +34,7 @@ class Scene
 {
 public:
     Scene(void)
-        : fogFactor(0.2f)
+        : fogFactor(0.2f), farDistance(5.f)
     { }
     ~Scene(void);
 
@@ -49,6 +49,12 @@ public:
         fogFactor = factor;
     }
 
+    float GetFarDistance() { return farDistance; }
+    void SetFarDistance(float dist)
+    {
+        farDistance = dist;
+    }
+
     void Init();
     void BuildGrid();
 
@@ -60,5 +66,6 @@ private:
     GridBox boundingBox;
 
     float fogFactor;
+    float farDistance;
 };
 
