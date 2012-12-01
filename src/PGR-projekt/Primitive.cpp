@@ -149,16 +149,28 @@ int Particle::Intersect(Ray& ray, float& dist)
                 //float c = 1-(((float)rand()/RAND_MAX/distToCenter/20)*radius);
                 //float c = 1 - distToCenter/radius;
 
-                glm::vec3 planePos(contactPoint - this->position);
-                int texPosX = glm::clamp((int)(planePos.x / radius * 255) + 128, 0, 255);
-                int texPosY = glm::clamp((int)(planePos.y / radius * 255) + 128, 0, 255);
+                Texture *t=this->GetTexture();
+                if(t->isEnabled()==true)
+                {
+                    unsigned char *texture=t->getTexture();
+                    glm::vec3 planePos(contactPoint - this->position);
 
-                
+                    //old version
+                    /*int texPosX = glm::clamp((int)(planePos.x / radius * t->getWidth()) + t->getWidth()/2, 0, t->getWidth());
+                    int texPosY = glm::clamp((int)(planePos.y / radius * t->getHeight()) + t->getHeight()/2, 0, t->getHeight());
+                    float c = texture[(texPosY * t->getHeight() + texPosX)]/255.f;*/
 
-                float c = this->texture[(texPosY * 255 + texPosX)]/255.f;
-                //std::cout << texPosX << " " << texPosY << " " << c << "\n"; 
+                    ////new version
+                    int xx=((int)(planePos.x / radius * t->getWidth()) + t->getWidth()/2)%t->getWidth();
+                    int yy=((int)(planePos.y / radius * t->getHeight()) + t->getHeight()/2)%t->getHeight();
+                    if(xx<0)
+                        xx*=-1;
+                    if(yy<0)
+                        yy*=-1;
+                    float c = texture[(yy * t->getHeight() + xx)]/255.f;
 
-                material.SetColor(glm::vec4(c, c, c, 1));
+                    material.SetColor(glm::vec4(c, c, c, 1));
+                }
 
                 return INTERSECTION_RES_HIT_OUTSIDE;
             }

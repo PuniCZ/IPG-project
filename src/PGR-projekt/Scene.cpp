@@ -57,7 +57,10 @@ void Scene::Init()
 
     primitives.push_back(new Particle(glm::vec3(-5.5f, 1.5f, 5), glm::vec3(0, 0, 1), 2.0f));
     primitives.back()->SetMaterial(Material(glm::vec4(.2f, 1.f, .2f, 1), .6f));
-
+    primitives.back()->SetTexture(Texture(255,255,true));
+    //primitives.back()->GetTexture()->setExpCurve(true,20,0.5f);  //optional 0-255, 0.0f-1.0f vytvari vetsi diry v mraku
+    //primitives.back()->GetTexture()->setZoom(200);                //optional
+    primitives.back()->GetTexture()->generateTexture();
 
     BuildGrid();
 }

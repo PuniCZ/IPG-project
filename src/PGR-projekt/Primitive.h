@@ -4,6 +4,7 @@
 #include "Ray.h"
 #include "Utils.h"
 #include "Defines.h"
+#include "PerlinNoise.h"
 
 class Material
 {
@@ -112,6 +113,81 @@ private:
     glm::vec3 size;
 };
 
+class Texture
+{
+public:
+	Texture(void) 
+        : width(256), height(256), enabled(false), tex(NULL)
+    { }
+
+	Texture(bool enabled) 
+        : width(256), height(256), enabled(enabled), tex(NULL)
+    { }
+
+    Texture(int width, int height, bool enabled) 
+        : width(width), height(height), enabled(enabled), tex(NULL)
+    { }
+
+    Texture(int width, int height) 
+        : width(width), height(height), enabled(false), tex(NULL)
+    { }
+
+
+	~Texture(void)
+    {
+        if(this->enabled)
+            delete [] tex;
+    }
+
+    void setSize(int width, int height)
+    { 
+        this->width=width;
+        this->height=height;
+    }
+
+    void setHeight(int height) { this->height = height; }
+    void setWidth(int width) { this->width = width;}
+    int getWidth(void) { return this->width; }   
+    int getHeight(void) { return this->height; }
+
+    bool isEnabled(void) { return this->enabled; }
+    void setEnabled(bool enabled) { this->enabled = enabled;}
+
+    void setSmoothNoise(bool smooth) { this->noise.setSmoothNoise(smooth); } //if true consume more CPU then default noise
+
+    void setExpCurve(bool curve) { this->noise.setExpCurve(curve); }
+    void setExpCurve(bool curve,int texCover, double texSharpness) { this->noise.setExpCurve(curve, texCover, texSharpness); }
+    void setExpCurve(int texCover, double texSharpness) { this->noise.setExpCurve(texCover, texSharpness); }
+
+    void setZoom(int zoom){ this->noise.setZoom(zoom);}
+    void setPersistance(double persistance) {this->noise.setPersistance(persistance);}
+    void setZoomPersistance(int zoom, double persistance){ this->noise.setZoomPersistance(zoom, persistance);}
+    
+    unsigned char *getTexture(void)
+    {
+        if(!this->enabled)
+            return NULL;
+        else
+            return tex;
+    }
+
+
+
+    void generateTexture(void)
+    {
+        if(this->enabled)
+        {
+           tex=noise.generate(width, height);
+        }
+    }
+
+private:
+    int width;
+    int height;
+    bool enabled;
+    PerlinNoise noise;
+    unsigned char* tex;
+};
 
 class Primitive
 {
@@ -132,6 +208,11 @@ public:
     }
 
     int GetRayId() { return rayID; }
+    Texture* GetTexture() { return &texture; }
+    void SetTexture(Texture tex) 
+    {
+        this->texture = tex;
+    }
 
 
     virtual glm::vec3 GetNormal(glm::vec3 dir) = 0;
@@ -144,6 +225,7 @@ protected:
     Material material;
     bool isLight;
     int rayID;
+    Texture texture;
 };
 
 class Plane : public Primitive
@@ -227,12 +309,12 @@ public:
     Particle(glm::vec3 position, glm::vec3 normal, float radius)
         :position(position), radius(radius), normal(normal)
     {
-        texture = Utils::CreateGaussianMap(256);
+
     }
 
     ~Particle(void) 
     { 
-        delete[] texture;
+
     };
 
     float GetRadius() { return radius; }
@@ -262,7 +344,6 @@ private:
     glm::vec3 normal;
     float radius;
     
-    unsigned char* texture;
 };
 
 
