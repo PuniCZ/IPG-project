@@ -214,7 +214,7 @@ public:
         this->texture = tex;
     }
 
-    virtual glm::vec4 GetColor(glm::vec3& pos)
+    virtual glm::vec4 GetColor(glm::vec3& pos, glm::vec3& origin)
     {
         return material.GetColor();
     }
@@ -294,10 +294,10 @@ public:
 
     glm::vec3 GetNormal(glm::vec3 dir) 
     { 
-        return (dir - this->position) * this->revRadius; 
+        return glm::normalize((dir - this->position) * this->revRadius); 
     }
 
-    glm::vec4 GetColor(glm::vec3& pos);
+    glm::vec4 GetColor(glm::vec3& pos, glm::vec3& origin);
 
     int Intersect(Ray& ray, float& dist);
     bool IntersectBox(GridBox& box);

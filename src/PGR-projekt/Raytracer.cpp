@@ -104,7 +104,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
         }
     }
 #else  
-   intersectionResult = FindNearest(ray, distance, hitObject);
+    intersectionResult = FindNearest(ray, distance, hitObject);
 #endif
     if (hitObject)
     {
@@ -120,11 +120,12 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
         else
         {
             pi = ray.GetOrigin() + ray.GetDirection() * distance;
-            
-            
+            //ambient color
+            tmpColor += hitObject->GetColor(pi, ray.GetOrigin()) * .2f;
+
             if(hitObject->GetTexture()->isEnabled())
             {
-                tmpColor = hitObject->GetColor(pi);
+                
                 //color = tmpColor;
                 //return RaytracerResult();
             }
@@ -168,7 +169,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                         {
                             float diff = dot * hitObject->GetMaterial()->GetDiffuse() * shade;
                             // add diffuse component to ray color
-                            tmpColor += diff * light->GetMaterial()->GetColor() * hitObject->GetMaterial()->GetColor();
+                            tmpColor += diff * light->GetMaterial()->GetColor() * hitObject->GetColor(pi, ray.GetOrigin());
                             visibleLights++;
                         }
                     }
@@ -202,7 +203,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                     glm::vec4 rcol(0);
                     float dist = INT_MAX;
                     Raytrace(Ray(pi + R * EPSILON, R), rcol, depth + 1, dist, refractionIndex);
-                    tmpColor += refl * rcol * hitObject->GetMaterial()->GetColor();
+                    tmpColor += refl * rcol * hitObject->GetColor(pi, ray.GetOrigin());
                 }
             }
 
@@ -220,10 +221,17 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                     glm::vec3 T((n * ray.GetDirection()) + (n * cosI - sqrtf( cosT2 )) * N);
                     glm::vec4 rcol(0);
                     float dist = INT_MAX;
-                    Raytrace(Ray( pi + T * EPSILON, T ), rcol, depth + 1, rindex, dist);
+                    glm::vec4 transparency;
+                    RaytracerResult rtRes =  Raytrace(Ray( pi + T * EPSILON, T ), rcol, depth + 1, dist, rindex);
+
                     // apply Beer's law
-                    glm::vec4 absorbance = hitObject->GetMaterial()->GetColor() * 0.15f * -dist;
-                    glm::vec4 transparency(expf( absorbance.r ), expf( absorbance.g ), expf( absorbance.b ), 1);
+                    glm::vec4 absorbance = hitObject->GetColor(pi, ray.GetOrigin()) * 0.25f;// * -dist;
+                    transparency = glm::vec4(expf( absorbance.r ), expf( absorbance.g ), expf( absorbance.b ), 1);  
+                    
+
+
+                    applyFarFilter(rcol, dist);
+
                     tmpColor += rcol * transparency;
 
                     reflectedObjects++; //TODO: needs pass from recursive call

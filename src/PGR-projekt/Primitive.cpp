@@ -71,7 +71,7 @@ int Sphere::Intersect(Ray& ray, float& dist)
                 if (i2 < dist) 
                 {
                     dist = i2;
-                    return INTERSECTION_RES_HIT_OUTSIDE; //inside
+                    return INTERSECTION_RES_HIT_INSIDE; //inside
                 }
             }
             else
@@ -79,7 +79,7 @@ int Sphere::Intersect(Ray& ray, float& dist)
                 if (i1 < dist)
                 {
                     dist = i1;
-                    return INTERSECTION_RES_HIT_INSIDE;
+                    return INTERSECTION_RES_HIT_OUTSIDE;
                 }
             }
         }
@@ -87,19 +87,28 @@ int Sphere::Intersect(Ray& ray, float& dist)
     return INTERSECTION_RES_MISS;
 }
 
-glm::vec4 Sphere::GetColor(glm::vec3& pos)
+glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
 {
     glm::vec4 retval;
     Texture *t=this->GetTexture();
-    if(!t->isEnabled()==true)
+    if(!t->isEnabled())
         retval = material.GetColor(); 
     else
     {
+        glm::vec3 view(glm::normalize(this->position - origin));
+        glm::vec3 viewCent(this->position + (view * this->radius));
+        glm::vec3 distFromCenter(viewCent - pos);
+        glm::vec3 pomer(GetNormal(pos)/view);
+        float mult = fabs(glm::dot(view, GetNormal(pos)));//LENGTH(pomer);
+
+        glm::vec3 pole(0, 1, 0);
+        glm::vec3 texPos(1, 0, 0);
+
         glm::vec3 vp = (pos - this->position) * this->revRadius;
-        float phi = acosf( -glm::dot(vp, glm::vec3(0, 1, 0)));
+        float phi = acosf( -glm::dot(vp, pole));
         float u=phi * 2 * (1.0f / PI), v = phi * 2 * (1.0f / PI);
-        float theta = (acosf( glm::dot( glm::vec3(1, 0, 0), vp ) / sinf( phi ))) * (2.0f / PI);
-        if (glm::dot( glm::cross(glm::vec3(0, 1, 0), glm::vec3(1, 0, 0)), vp ) >= 0) u = (1.0f - theta) * 2;
+        float theta = (acosf( glm::dot(texPos, vp ) / sinf(phi))) * (2.0f / PI);
+        if (glm::dot( glm::cross(pole, texPos), vp ) >= 0) u = (1.0f - theta) * 2;
         else u = theta * 2;
 
         unsigned char *texture=this->GetTexture()->getTexture();
@@ -113,7 +122,7 @@ glm::vec4 Sphere::GetColor(glm::vec3& pos)
             yy*=-1;
         float c = texture[(yy * t->getHeight() + xx)]/255.f;
 
-        retval = c * material.GetColor();
+        retval = (c * material.GetColor());
     }
     return retval;
 }
