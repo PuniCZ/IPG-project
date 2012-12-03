@@ -52,6 +52,7 @@ int main (int /*argc*/, char ** /*argv*/)
     ScreenBuffer* buffer = camera.GetBuffer();
 
     Scene scene = Scene();
+    scene.SetFogFactor(0.0f);
 
     scene.Init();
 

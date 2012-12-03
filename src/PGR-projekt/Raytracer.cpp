@@ -307,7 +307,8 @@ int Raytracer::FindNearest(Ray& ray, float& dist, Primitive*& primitive)
     // trace primary ray
     while (1)
     {
-        list = grid[X + (Y << 3) + (Z << 6)];
+        //list = grid[X + (Y << 3) + (Z << 6)];
+        list = grid[X + Y * GRIDSIZE + Z * GRIDSIZE * GRIDSIZE];
         while(list)
         {
             Primitive* pr = list->GetPrimitive();
@@ -363,7 +364,8 @@ int Raytracer::FindNearest(Ray& ray, float& dist, Primitive*& primitive)
 testloop:
     while (1)
     {
-        list = grid[X + (Y << 3) + (Z << 6)];
+        //list = grid[X + (Y << 3) + (Z << 6)];
+        list = grid[X + Y * GRIDSIZE + Z * GRIDSIZE * GRIDSIZE];
         while (list)
         {
             Primitive* pr = list->GetPrimitive();
