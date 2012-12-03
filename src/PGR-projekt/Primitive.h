@@ -307,7 +307,7 @@ class Particle : public Primitive
 {
 public:
     Particle(glm::vec3 position, glm::vec3 normal, float radius)
-        :position(position), radius(radius), normal(normal)
+        :position(position), radius(radius), normal(normal), sqrRadius(radius * radius)
     {
 
     }
@@ -321,6 +321,7 @@ public:
     void SetRadius(float radius)
     {
         this->radius = radius;
+        this->sqrRadius = radius * radius;
     }
 
     glm::vec3 GetPosition() { return position; }
@@ -343,6 +344,8 @@ private:
     glm::vec3 position;
     glm::vec3 normal;
     float radius;
+    
+    float sqrRadius;
     
 };
 
