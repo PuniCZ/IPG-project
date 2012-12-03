@@ -148,8 +148,7 @@ bool Sphere::IntersectBox(GridBox& box)
     {
         dmin = dmin + (position.z - v2.z) * (position.z - v2.z);
     }
-
-    return (dmin <= radius);
+    return (dmin <= sqrRadius);
 }
 
 GridBox Sphere::GetBoundingBox()
@@ -244,7 +243,7 @@ bool Particle::IntersectBox(GridBox& box)
     {
         dmin = dmin + (position.z - v2.z) * (position.z - v2.z);
     }
-    return (dmin <= radius);
+    return (dmin <= sqrRadius);
 }
 
 GridBox Particle::GetBoundingBox()

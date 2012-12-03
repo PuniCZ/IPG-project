@@ -14,7 +14,7 @@
 #define INTERSECTION_RES_HIT_INSIDE     -1
 #define INTERSECTION_RES_HIT_OUTSIDE     1
 #define INTERSECTION_RES_MISS            0
-#define GRIDSIZE                         8 //
+#define GRIDSIZE                         32 //
 
 #define USE_GRID
 
