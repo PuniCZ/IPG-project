@@ -87,6 +87,37 @@ int Sphere::Intersect(Ray& ray, float& dist)
     return INTERSECTION_RES_MISS;
 }
 
+glm::vec4 Sphere::GetColor(glm::vec3& pos)
+{
+    glm::vec4 retval;
+    Texture *t=this->GetTexture();
+    if(!t->isEnabled()==true)
+        retval = material.GetColor(); 
+    else
+    {
+        glm::vec3 vp = (pos - this->position) * this->revRadius;
+        float phi = acosf( -glm::dot(vp, glm::vec3(0, 1, 0)));
+        float u=phi * 2 * (1.0f / PI), v = phi * 2 * (1.0f / PI);
+        float theta = (acosf( glm::dot( glm::vec3(1, 0, 0), vp ) / sinf( phi ))) * (2.0f / PI);
+        if (glm::dot( glm::cross(glm::vec3(0, 1, 0), glm::vec3(1, 0, 0)), vp ) >= 0) u = (1.0f - theta) * 2;
+        else u = theta * 2;
+
+        unsigned char *texture=this->GetTexture()->getTexture();
+
+
+        int xx=((int)(u * t->getWidth()) + t->getWidth()/2)%t->getWidth();
+        int yy=((int)(v * t->getHeight()) + t->getHeight()/2)%t->getHeight();
+        if(xx<0)
+            xx*=-1;
+        if(yy<0)
+            yy*=-1;
+        float c = texture[(yy * t->getHeight() + xx)]/255.f;
+
+        retval = c * material.GetColor();
+    }
+    return retval;
+}
+
 bool Sphere::IntersectBox(GridBox& box)
 {
     float dmin = 0;
@@ -99,6 +130,7 @@ bool Sphere::IntersectBox(GridBox& box)
     {
         dmin = dmin + (position.x - v2.x) * (position.x - v2.x);
     }
+    
     if (position.y < v1.y)
     {
         dmin = dmin + (position.y - v1.y) * (position.y - v1.y);
@@ -107,6 +139,7 @@ bool Sphere::IntersectBox(GridBox& box)
     {
         dmin = dmin + (position.y - v2.y) * (position.y - v2.y);
     }
+
     if (position.z < v1.z)
     {
         dmin = dmin + (position.z - v1.z) * (position.z - v1.z);
@@ -115,6 +148,7 @@ bool Sphere::IntersectBox(GridBox& box)
     {
         dmin = dmin + (position.z - v2.z) * (position.z - v2.z);
     }
+
     return (dmin <= radius);
 }
 

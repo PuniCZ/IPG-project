@@ -104,7 +104,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
         }
     }
 #else  
-    FindNearest(ray, distance, hitObject);
+   intersectionResult = FindNearest(ray, distance, hitObject);
 #endif
     if (hitObject)
     {
@@ -120,6 +120,14 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
         else
         {
             pi = ray.GetOrigin() + ray.GetDirection() * distance;
+            
+            
+            if(hitObject->GetTexture()->isEnabled())
+            {
+                tmpColor = hitObject->GetColor(pi);
+                //color = tmpColor;
+                //return RaytracerResult();
+            }
             //trace lights
             for (std::list<Primitive*>::iterator it = scene.GetLigths()->begin(); it != scene.GetLigths()->end(); it++)
             {

@@ -34,8 +34,15 @@ void Scene::Init()
 
     //big sphere
     primitives.push_back(new Sphere(glm::vec3(1, -.8f, 3), 2.5f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 1), 0.2f, 0.6f));
-    
+    primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 0.5f), 0.2f, 0.6f, .5f, 1.f));
+    primitives.back()->SetTexture(Texture(255,255,true));
+    //primitives.back()->GetTexture()->setExpCurve(true,20,0.5f);  //optional 0-255, 0.0f-1.0f vytvari vetsi diry v mraku
+    //primitives.back()->GetTexture()->setZoom(200);                //optional
+    primitives.back()->GetTexture()->generateTexture();
+    primitives.back()->GetMaterial()->SetReflection( 0.2f );
+    primitives.back()->GetMaterial()->SetRefraction( 0.8f );
+    primitives.back()->GetMaterial()->SetRefractionIndex( 1.f );
+
     //small sphere
     primitives.push_back(new Sphere(glm::vec3(-5.5f, -.5f, 7), 2.0f));
     primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, 1.f, 1), 0.1f, 1.f));
@@ -55,12 +62,15 @@ void Scene::Init()
     primitives.back()->SetMaterial(Material(glm::vec4(.9f, .9f, .9f, 1), 10));
     primitives.back()->SetLigth(true);*/
 
-    primitives.push_back(new Particle(glm::vec3(-5.5f, 1.5f, 5), glm::vec3(0, 0, 1), 2.0f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.2f, 1.f, .2f, 1), .6f));
+   /* primitives.push_back(new Particle(glm::vec3(-5.5f, 1.5f, 5), glm::vec3(0, 0, 1), 2.0f));
+    primitives.back()->SetMaterial(Material(glm::vec4(.2f, 1.f, .2f, 1), .6f, 0.5f));
     primitives.back()->SetTexture(Texture(255,255,true));
     //primitives.back()->GetTexture()->setExpCurve(true,20,0.5f);  //optional 0-255, 0.0f-1.0f vytvari vetsi diry v mraku
     //primitives.back()->GetTexture()->setZoom(200);                //optional
     primitives.back()->GetTexture()->generateTexture();
+    primitives.back()->GetMaterial()->SetReflection( 0.2f );
+    primitives.back()->GetMaterial()->SetRefraction( 0.8f );
+    primitives.back()->GetMaterial()->SetRefractionIndex( 2.417f );*/
 
     BuildGrid();
 }
