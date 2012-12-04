@@ -105,13 +105,18 @@ glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
 
         glm::vec3 pole(0, 1, 0);
         glm::vec3 texPos(1, 0, 0);
+        float Vscale=2;
+        float Uscale=1;
 
         glm::vec3 vp = (pos - this->position) * this->revRadius;
         float phi = acosf( -glm::dot(vp, pole));
-        float u=phi * 2 * (1.0f / PI), v = phi * 2 * (1.0f / PI);
+
+        float u=phi * Vscale * (1.0f / PI), v = phi * Vscale * (1.0f / PI);
         float theta = (acosf( glm::dot(texPos, vp ) / sinf(phi))) * (2.0f / PI);
-        if (glm::dot( glm::cross(pole, texPos), vp ) >= 0) u = (1.0f - theta) * 2;
-        else u = theta * 2;
+        if (glm::dot( glm::cross(pole, texPos), vp ) >= 0)
+            u = (1.0f - theta) * Uscale;
+        else
+            u = theta * Uscale;
 
         unsigned char *texture=this->GetTexture()->getTexture();
 

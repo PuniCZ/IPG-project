@@ -209,6 +209,11 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
 
             // calculate refraction
             float refr = hitObject->GetMaterial()->GetRefraction();
+            if(!(depth < TRACEDEPTH))
+            { //max depth reached
+                tmpColor=glm::vec4(0.47f); //TODO: vymyslet co s barvou
+            }
+
             if ((hitObject->GetMaterial()->GetRefraction() > 0) && (depth < TRACEDEPTH))
             {
                 float rindex = hitObject->GetMaterial()->GetRefractionIndex();
