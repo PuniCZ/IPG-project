@@ -54,11 +54,11 @@ GridBox Plane::GetBoundingBox()
 
 
 int Sphere::Intersect(Ray& ray, float& dist)
-{    
+{
     glm::vec3 v = ray.GetOrigin() - this->position;
     float b = -glm::dot(v, ray.GetDirection());
     float det = (b * b) - glm::dot(v, v) + this->sqrRadius;
-    bool retval = false;
+    int retval = INTERSECTION_RES_MISS;
     if (det > 0)
     {
         det = sqrtf(det);
@@ -71,7 +71,7 @@ int Sphere::Intersect(Ray& ray, float& dist)
                 if (i2 < dist) 
                 {
                     dist = i2;
-                    return INTERSECTION_RES_HIT_INSIDE; //inside
+                    retval = INTERSECTION_RES_HIT_INSIDE; //inside
                 }
             }
             else
@@ -79,12 +79,12 @@ int Sphere::Intersect(Ray& ray, float& dist)
                 if (i1 < dist)
                 {
                     dist = i1;
-                    return INTERSECTION_RES_HIT_OUTSIDE;
+                    retval = INTERSECTION_RES_HIT_OUTSIDE;
                 }
             }
         }
     }
-    return INTERSECTION_RES_MISS;
+    return retval;
 }
 
 glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)

@@ -24,9 +24,9 @@ void Cloud::CopyParticlesToScene(Scene& scene)
     for (std::vector<CloudParticle>::iterator it = particles.begin(); it != particles.end(); it++)
     {
         Sphere* spere = new Sphere(it->GetPosition(), it->GetSize());
-        spere->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 0.5f), 0.2f, 0.0f, .5f, 1.f));
+        spere->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 0.5f), 1.f, 0.0f, .8f, 1.f));
         spere->SetTexture(Texture(255,255,true));
-        spere->GetTexture()->setSmoothNoise(true);
+        //spere->GetTexture()->setSmoothNoise(true);
         spere->GetTexture()->generateTexture();
         scene.GetPrimitives()->push_back(spere);
     }

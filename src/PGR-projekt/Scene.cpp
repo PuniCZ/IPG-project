@@ -29,8 +29,8 @@ void Scene::Init()
     primitives.back()->SetLigth(true);*/
 
     //ground
-    primitives.push_back(new Plane(glm::vec3(0, 1, 0), 4.4f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.4f, .3f, .3f, 1), 1.f));
+    //primitives.push_back(new Plane(glm::vec3(0, 1, 0), 4.4f));
+    //primitives.back()->SetMaterial(Material(glm::vec4(.4f, .3f, .3f, 1), 1.f));
 
     ////big sphere
     //primitives.push_back(new Sphere(glm::vec3(1, -.8f, 3), 2.5f));
@@ -54,7 +54,7 @@ void Scene::Init()
 
     //light 2
     primitives.push_back(new Sphere(glm::vec3(2, 5, 1), 0.1f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.6f, .6f, .8f, 1)));
+    primitives.back()->SetMaterial(Material(glm::vec4(.1f, .1f, .1f, 1)));
     primitives.back()->SetLigth(true);
 
 
@@ -72,7 +72,7 @@ void Scene::Init()
     primitives.back()->GetMaterial()->SetRefraction( 0.8f );
     primitives.back()->GetMaterial()->SetRefractionIndex( 2.417f );*/
 
-    Cloud cld(glm::vec3(3, 3, 5), glm::vec3(2.5f,1.5f,0.5f));
+    Cloud cld(glm::vec3(0, 3, 5), glm::vec3(2.5f,1.5f,0.4f));
 
     cld.CopyParticlesToScene(*this);
 
