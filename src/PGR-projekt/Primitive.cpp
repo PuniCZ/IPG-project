@@ -95,7 +95,7 @@ glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
         retval = material.GetColor(); 
     else
     {
-        //TODO: Use source vector in futere
+        //TODO: Use source vector in futere glm::degrees(acos(glm::dot(newViewPos, lastViewPos))) > ANGLE_DIFF_BETWEEN_PARTICLE_UPDATE;
         float mult = glm::clamp(-GetNormal(pos).z, 0.f, 1.f);
         mult = glm::clamp(exp(mult)-1.8f, 0.f, 1.f)*1.5f;
         mult = glm::clamp(-pow(0.8f, mult)+1, 0.f, 1.f)*mult*5;

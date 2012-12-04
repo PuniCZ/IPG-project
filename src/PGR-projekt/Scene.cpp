@@ -1,5 +1,5 @@
 #include "Scene.h"
-
+#include "Cloud.h"
 
 
 Scene::~Scene(void)
@@ -32,20 +32,20 @@ void Scene::Init()
     primitives.push_back(new Plane(glm::vec3(0, 1, 0), 4.4f));
     primitives.back()->SetMaterial(Material(glm::vec4(.4f, .3f, .3f, 1), 1.f));
 
-    //big sphere
-    primitives.push_back(new Sphere(glm::vec3(1, -.8f, 3), 2.5f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 0.5f), 0.2f, 0.6f, .5f, 1.f));
-    primitives.back()->SetTexture(Texture(255,255,true));
-    //primitives.back()->GetTexture()->setExpCurve(true,20,0.5f);  //optional 0-255, 0.0f-1.0f vytvari vetsi diry v mraku
-    //primitives.back()->GetTexture()->setZoom(200);                //optional
-    primitives.back()->GetTexture()->generateTexture();
-    primitives.back()->GetMaterial()->SetReflection( 0.2f );
-    primitives.back()->GetMaterial()->SetRefraction( 0.8f );
-    primitives.back()->GetMaterial()->SetRefractionIndex( 1.f );
+    ////big sphere
+    //primitives.push_back(new Sphere(glm::vec3(1, -.8f, 3), 2.5f));
+    //primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 0.5f), 0.2f, 0.6f, .5f, 1.f));
+    //primitives.back()->SetTexture(Texture(255,255,true));
+    ////primitives.back()->GetTexture()->setExpCurve(true,20,0.5f);  //optional 0-255, 0.0f-1.0f vytvari vetsi diry v mraku
+    ////primitives.back()->GetTexture()->setZoom(200);                //optional
+    //primitives.back()->GetTexture()->generateTexture();
+    //primitives.back()->GetMaterial()->SetReflection( 0.2f );
+    //primitives.back()->GetMaterial()->SetRefraction( 0.8f );
+    //primitives.back()->GetMaterial()->SetRefractionIndex( 1.f );
 
-    //small sphere
-    primitives.push_back(new Sphere(glm::vec3(-5.5f, -.5f, 7), 2.0f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, 1.f, 1), 0.1f, 1.f));
+    ////small sphere
+    //primitives.push_back(new Sphere(glm::vec3(-5.5f, -.5f, 7), 2.0f));
+    //primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, 1.f, 1), 0.1f, 1.f));
 
     //light 1
     primitives.push_back(new Sphere(glm::vec3(0, 5, 5), 0.1f));
@@ -71,6 +71,12 @@ void Scene::Init()
     primitives.back()->GetMaterial()->SetReflection( 0.2f );
     primitives.back()->GetMaterial()->SetRefraction( 0.8f );
     primitives.back()->GetMaterial()->SetRefractionIndex( 2.417f );*/
+
+    Cloud cld(glm::vec3(3, 3, 5), glm::vec3(2.5f,1.5f,0.5f));
+
+    cld.CopyParticlesToScene(*this);
+
+
 
     BuildGrid();
 }
