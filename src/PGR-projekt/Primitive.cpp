@@ -89,17 +89,19 @@ int Sphere::Intersect(Ray& ray, float& dist)
 
 glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
 {
-    glm::vec4 retval;
+    glm::vec4 retval(0);
     Texture *t=this->GetTexture();
     if(!t->isEnabled())
         retval = material.GetColor(); 
     else
     {
-        glm::vec3 view(glm::normalize(this->position - origin));
-        glm::vec3 viewCent(this->position + (view * this->radius));
-        glm::vec3 distFromCenter(viewCent - pos);
-        glm::vec3 pomer(GetNormal(pos)/view);
-        float mult = fabs(glm::dot(view, GetNormal(pos)));//LENGTH(pomer);
+        //TODO: Use source vector in futere
+        float mult = glm::clamp(-GetNormal(pos).z, 0.f, 1.f);
+        mult = glm::clamp(exp(mult)-1.8f, 0.f, 1.f)*1.5f;
+        mult = glm::clamp(-pow(0.8f, mult)+1, 0.f, 1.f)*mult*5;
+
+        if (mult == 0.f)
+            return retval;
 
         glm::vec3 pole(0, 1, 0);
         glm::vec3 texPos(1, 0, 0);
@@ -121,8 +123,9 @@ glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
         if(yy<0)
             yy*=-1;
         float c = texture[(yy * t->getHeight() + xx)]/255.f;
-
-        retval = (c * material.GetColor());
+        //std::cout << mult << "\n";
+        //retval = glm::vec4(mult, 0,0,1);//(c * material.GetColor()) * mult;
+        retval = (c * material.GetColor()) * (mult);
     }
     return retval;
 }

@@ -185,7 +185,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                         {
                             float spec = powf( dot, 20 ) * hitObject->GetMaterial()->GetSpecular() * shade;
                             // add specular component to ray color
-                            tmpColor += spec * light->GetMaterial()->GetColor();
+                            tmpColor += spec * light->GetMaterial()->GetColor() * hitObject->GetColor(pi, ray.GetOrigin()); //TODO: Added
                         }
                     }
                 }
