@@ -46,6 +46,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>$(ProjectDir)..\..\lib\glew\bin;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(ProjectDir)..\..\lib\glew\include;$(ProjectDir)..\..\lib\glm;$(ProjectDir)..\..\lib\sdl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\lib\glew\lib;$(ProjectDir)..\..\lib\sdl\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -61,10 +65,7 @@
       <AdditionalDependencies>opengl32.lib;glu32.lib;SDL.lib;SDLmain.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>copy $(ProjectDir)..\..\lib\glew\bin\glew32.dll $(TargetDir)
-copy $(ProjectDir)..\..\lib\sdl\lib\sdl.dll $(TargetDir)
-copy $(ProjectDir)shaders\*.* $(TargetDir)
-copy $(ProjectDir)images\*.* $(TargetDir)</Command>
+      <Command>copy $(ProjectDir)..\..\lib\glew\bin\glew32.dll $(TargetDir)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,7 +83,11 @@ copy $(ProjectDir)images\*.* $(TargetDir)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;SDL.lib;SDLmain.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>copy $(ProjectDir)..\..\lib\glew\bin\glew32.dll $(TargetDir)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\..\lib\glew\bin\glew32.dll">
