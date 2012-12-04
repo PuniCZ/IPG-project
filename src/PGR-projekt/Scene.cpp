@@ -73,9 +73,11 @@ void Scene::Init()
     primitives.back()->GetMaterial()->SetRefractionIndex( 2.417f );*/
 
     Cloud cld(glm::vec3(0, 2, 5), glm::vec3(2.5f,1.2f,0.4f));
-
+    
     cld.CopyParticlesToScene(*this);
 
+    Cloud cld2(glm::vec3(-1, -1, 3), glm::vec3(1.5f,.5f,0.2f));
+    cld2.CopyParticlesToScene(*this);
 
 
     BuildGrid();

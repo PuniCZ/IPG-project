@@ -120,8 +120,10 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
         else
         {
             pi = ray.GetOrigin() + ray.GetDirection() * distance;
+
+            glm::vec4 farColor(.2f, .4f, .6f, 1.f);
             //ambient color
-            tmpColor += hitObject->GetColor(pi, ray.GetOrigin()) * .2f;
+            tmpColor += (farColor) * .02f *  glm::clamp(- exp( (2-(float)depth)/5.f), -1.2f, 0.f);
 
             if(hitObject->GetTexture()->isEnabled())
             {
