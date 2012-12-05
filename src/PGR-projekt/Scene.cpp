@@ -74,24 +74,24 @@ void Scene::Init()
     primitives.push_back(new Sphere(glm::vec3(20, -15, -5), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.6f, .6f, .6f, 1)));
     primitives.back()->SetLigth(true);
-    /*
+    
     //light 2
-    primitives.push_back(new Sphere(glm::vec3(0, -8, -6), 0.1f));
+    /*primitives.push_back(new Sphere(glm::vec3(0, -8, -6), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.99f, .39f, .0f, 1)));
     primitives.back()->SetLigth(true);
-
+    
     //light 1
     primitives.push_back(new Sphere(glm::vec3(0, -5, -5), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.3f, .3f, .3f, 1)));
     primitives.back()->SetLigth(true);*/
     
-    Sky sky(1);
+    Sky sky(3);
     sky.CopySkyToScene(*this);
     
-    /*Cloud cld(glm::vec3(2, 2, 5), glm::vec3(1.5f,1.f,0.3f));
-    cld.CopyParticlesToScene(*this);
+    /*Cloud cld(glm::vec3(8, 13, 30), glm::vec3(1.5f,1.f,0.3f));
+    cld.CopyParticlesToScene(*this);*/
 
-    
+    /*
     Cloud cld2(glm::vec3(-10, -2, 15), glm::vec3(1.5f,.5f,0.2f));
     cld2.CopyParticlesToScene(*this);
 
@@ -114,7 +114,7 @@ void Scene::BuildGrid()
     memset(grid, 0, GRIDSIZE * GRIDSIZE * GRIDSIZE * sizeof(std::list<Primitive*>*));
     //glm::vec3 p1(-14, -5, -6), p2( 14, 8, 30 ); //TODO: World boundaries
 
-    glm::vec3 p1(-20, -20, -20), p2( 20, 20, 30 ); //TODO: World boundaries
+    glm::vec3 p1(-30, -20, -20), p2( 30, 20, 30 ); //TODO: World boundaries
 
     // calculate cell width, height and depth
     float dx = (p2.x - p1.x) / GRIDSIZE, dx_reci = 1.0f / dx;
