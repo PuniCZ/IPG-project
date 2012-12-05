@@ -1,9 +1,10 @@
 #include "Sky.h"
+#include <iostream>
+using namespace std;
+#include <windows.h>
 
 Sky::Sky(int numOfClouds)
 {
-
-    
     for (int i = 0; i < numOfClouds; i++)
     {
         /***************************************
@@ -24,12 +25,12 @@ Sky::Sky(int numOfClouds)
         float xPos=1;
         float yPos=1;
         */
-
-        //float zPos=12.5f + Utils::Gaussrand(8.f,12.5f)+5; //5 -30
-        float zPos=(rand()%6)*5+5;
+        Sleep(500);
+        float zPos=10.5f + Utils::Gaussrand(8.f,10.5f)+5; //5 -30
+        //float zPos=(rand()%5)*5+5;
         float xPos=Utils::Gaussrand(4.f+(0.8f*zPos),4.f + (0.8f*zPos));
         float yPos=fabs(Utils::Gaussrand(3.f,4.f))+zPos*0.4f;
-
+        cout<<zPos<<" "<<xPos<<" "<<yPos<<endl;
 
         //double xPos = rand()%30-15, yPos = rand()%-15, zPos  = rand()%20+5;
         double xSize = 1.5f, ySize=0.5f, zSize=0.2f;

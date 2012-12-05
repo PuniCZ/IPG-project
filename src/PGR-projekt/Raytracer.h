@@ -43,6 +43,7 @@ public:
     ~Raytracer(void);
 
     bool Render();
+    void Init();
 
     RaytracerResult Raytrace(Ray& ray, glm::vec4&color, int depth, float& distance, float refractionIndex);
     int getCurrentLine(){return curLine;};

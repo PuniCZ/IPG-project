@@ -116,11 +116,11 @@ private:
 class Texture
 {
 public:
-	Texture(void) 
+    Texture(void) 
         : width(256), height(256), enabled(false), tex(NULL)
     { }
 
-	Texture(bool enabled) 
+    Texture(bool enabled) 
         : width(256), height(256), enabled(enabled), tex(NULL)
     { }
 
@@ -133,7 +133,7 @@ public:
     { }
 
 
-	~Texture(void)
+    ~Texture(void)
     {
         if(this->enabled)
             delete [] tex;

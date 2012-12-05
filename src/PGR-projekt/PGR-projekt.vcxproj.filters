@@ -16,12 +16,6 @@
     <Filter Include="Libs">
       <UniqueIdentifier>{61515747-1988-448b-8aa5-029d79cea30d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fragment Shaders">
-      <UniqueIdentifier>{ce2e07bb-3033-4648-94ee-3e59daab107a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Vertex Shaders">
-      <UniqueIdentifier>{6bf26a85-0eca-43fe-8fe8-5073956ea9c0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tmp\lightmap.bmp">
@@ -35,12 +29,6 @@
     </None>
     <None Include="..\..\lib\glew\bin\glew32.dll">
       <Filter>Libs</Filter>
-    </None>
-    <None Include="shaders\particle.vs">
-      <Filter>Vertex Shaders</Filter>
-    </None>
-    <None Include="shaders\particle.fs">
-      <Filter>Fragment Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
