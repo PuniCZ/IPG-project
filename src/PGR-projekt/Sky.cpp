@@ -32,11 +32,18 @@ Sky::Sky(int numOfClouds)
         float yPos=fabs(Gaussrand(3.f,4.f))+zPos*0.4f;
         //cout<<zPos<<" "<<xPos<<" "<<yPos<<endl;
         
-        float xSizeMult=1+fabs(Utils::Gaussrand(1.1f*zPos,1.1f*zPos));
+        /*float xSizeMult=1+fabs(Utils::Gaussrand(1.1f*zPos,1.1f*zPos));
         float ySizeMult=1+fabs(Utils::Gaussrand(1.1f*zPos,1.1f*zPos));
         float zSizeMult=1+fabs(Utils::Gaussrand(1.1f*zPos,1.1f*zPos));
 
         float xSize = 1.5f, ySize=0.5f, zSize=0.2f;
+		*/
+		 float xSizeMult=0.5+Random();
+        float ySizeMult=0.7+Random();
+        float zSizeMult=0.7+Random();
+
+        float xSize = 1.5f * xSizeMult, ySize=0.5f * ySizeMult, zSize=0.2f * zSizeMult;
+
 
         clouds.push_back(Cloud(glm::vec3(xPos, yPos, zPos), glm::vec3(xSize,ySize,zSize)));
     }

@@ -32,7 +32,7 @@ void Scene::Init(int count)
 
     //ground
     //primitives.push_back(new Plane(glm::vec3(0, 1, 0), 4.4f));
-    //primitives.back()->SetMaterial(Material(glm::vec4(.4f, .3f, .3f, 1), 1.f));
+    //primitives.back()->SetMaterial(Material(glm::vec4(.1f, .3f, .1f, 1), 1.f));
 
     //big sphere
     //primitives.push_back(new Sphere(glm::vec3(1, -.8f, 3), 2.5f));
@@ -76,16 +76,16 @@ void Scene::Init(int count)
     primitives.push_back(new Sphere(glm::vec3(20, -15, -5), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.5f, .5f, .4f, 1)));
     primitives.back()->SetLigth(true);
-    /*
+    
     //light 2
     primitives.push_back(new Sphere(glm::vec3(0, -8, -6), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.99f, .39f, .0f, 1)));
     primitives.back()->SetLigth(true);
 
-    //light 1
+    //light 3
     primitives.push_back(new Sphere(glm::vec3(0, -5, -5), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.3f, .3f, .3f, 1)));
-    primitives.back()->SetLigth(true);*/
+    primitives.back()->SetLigth(true);
     
 	Sky sky(count);
 
