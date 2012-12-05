@@ -107,9 +107,7 @@
   <ItemGroup>
     <ClCompile Include="CameraPlane.cpp" />
     <ClCompile Include="Cloud.cpp" />
-    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mainOpenGL.cpp" />
     <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Ray.cpp" />
@@ -123,7 +121,6 @@
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="CloudParticle.h" />
     <ClInclude Include="Defines.h" />
-    <ClInclude Include="Light.h" />
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Ray.h" />

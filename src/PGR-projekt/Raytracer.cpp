@@ -33,7 +33,7 @@ bool Raytracer::Render()
 {
     glm::vec4 color;
     RaytracerResult lastResult;
-    std::vector<RaytracerResult> lastLineResults(camera->GetWidth());
+    std::vector<RaytracerResult> lastLineResults((int)camera->GetWidth());
 
     for (int y = curLine; y < camera->GetHeight(); y++)
     {
@@ -43,7 +43,7 @@ bool Raytracer::Render()
             glm::vec3 dir(posX, posY, 0);
             dir = glm::normalize(dir - camera->GetOrigin());
             Ray ray(camera->GetOrigin(), dir);
-            float distance = INT_MAX;
+            float distance = (float)INT_MAX;
             color = camera->GetBgColor();
             RaytracerResult hitResult = RenderRay(glm::vec3(posX, posY, 0), color);
 
@@ -53,14 +53,6 @@ bool Raytracer::Render()
                 lastResult = hitResult;
                 lastLineResults[x] = hitResult;
                 glm::vec4 tmpColor(0);
-                /*for ( int tx = -1; tx < 2; tx++ ) for ( int ty = -1; ty < 2; ty++ )
-                {
-                    glm::vec3 dir(posX + screenDiffX * tx / 2.0f, posY + screenDiffY * ty / 2.0f, 0);
-                    dir = glm::normalize(dir - camera->GetOrigin());
-                    Ray ray(camera->GetOrigin(), dir);
-                    float distance = INT_MAX;
-                    Raytrace(ray, tmpColor, 0, distance, 1.0f);
-                }*/
                 RenderRay(glm::vec3(posX - screenDiffX / 2.0f, posY, 0), tmpColor);
                 RenderRay(glm::vec3(posX, posY - screenDiffY / 2.0f, 0), tmpColor);
                 RenderRay(glm::vec3(posX - screenDiffX / 2.0f, posY - screenDiffY / 2.0f, 0), tmpColor);
@@ -76,7 +68,7 @@ bool Raytracer::Render()
         posY += screenDiffY;
         curLine++;
 
-
+        //possible output filtering
         /*for (int y = curLine; y < camera->GetHeight(); y++)
         {
             int size = 3;
@@ -113,7 +105,6 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
         if (intersectionResult = (*it)->Intersect(ray, distance))
         {
             hitObject = *it;
-            //tmpColor += ((*it)->GetMaterial()->GetColor()/(distance/5));
         }
     }
 #else  
@@ -121,10 +112,6 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
 #endif
     if (hitObject)
     {
-        //color = glm::vec4(1, 0, 0, 1);
-        //return RaytracerResult();
-
-        //tmpColor += glm::vec4(1, 0, 0, 1);
         if (hitObject->IsLigth())
         {
             //looking into light
@@ -133,18 +120,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
         else
         {
             pi = ray.GetOrigin() + ray.GetDirection() * distance;
-
-            glm::vec4 farColor(.2f, .4f, .6f, 1.f);
-            //ambient color
-            //tmpColor += (farColor) * .02f *  glm::clamp(- exp( (2-(float)depth)/5.f), -1.2f, 0.f);
-            //tmpColor += glm::vec4(.2f);
-
-            if(hitObject->GetTexture()->isEnabled())
-            {
-                
-                /*color = glm::vec4(1,0,0,1);;
-                return RaytracerResult();*/
-            }
+            
             //trace lights
             for (std::list<Primitive*>::iterator it = scene.GetLigths()->begin(); it != scene.GetLigths()->end(); it++)
             {
@@ -217,7 +193,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                 if (depth < TRACEDEPTH) 
                 {
                     glm::vec4 rcol(0);
-                    float dist = INT_MAX;
+                    float dist = (float)INT_MAX;
                     Raytrace(Ray(pi + R * EPSILON, R), rcol, depth + 1, dist, refractionIndex);
                     tmpColor += refl * rcol * hitObject->GetColor(pi, ray.GetOrigin());
                 }
@@ -241,7 +217,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                 {
                     glm::vec3 T((n * ray.GetDirection()) + (n * cosI - sqrtf( cosT2 )) * N);
                     glm::vec4 rcol(0);
-                    float dist = INT_MAX;
+                    float dist = (float)INT_MAX;
                     glm::vec4 transparency;
                     RaytracerResult rtRes =  Raytrace(Ray( pi + T * EPSILON, T ), rcol, depth + 1, dist, rindex);
 
@@ -249,15 +225,13 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                     glm::vec4 absorbance = hitObject->GetColor(pi, ray.GetOrigin()) * 0.25f;// * -dist;
                     transparency = glm::vec4(expf( absorbance.r ), expf( absorbance.g ), expf( absorbance.b ), 1);  
                     
+                    // apply far filter and color mixing based on actual depht 
                     float factor = (float)depth / (TRACEDEPTH/2);
-
                     glm::vec4 srcC = factor * glm::vec4(.7f, .7f, .7f, 1.f) + (1-factor)*glm::vec4(.2f, .4f, .6f, 1.f);
-
                     applyFarFilter(rcol, dist, srcC);
-
+                    
                     tmpColor += rcol * transparency;
-
-                    reflectedObjects++; //TODO: needs pass from recursive call
+                    reflectedObjects++;
                 }
             }
 
@@ -346,19 +320,15 @@ int Raytracer::FindNearest(Ray& ray, float& dist, Primitive*& primitive)
     // trace primary ray
     while (1)
     {
-        //list = grid[X + (Y << 3) + (Z << 6)];
         list = grid[X + Y * GRIDSIZE + Z * GRIDSIZE * GRIDSIZE];
         while(list)
         {
             Primitive* pr = list->GetPrimitive();
             int result;
-            //TODO: WTF if belloe
-            //if (pr->GetLastRayID() != ray.GetID()) 
             if (result = pr->Intersect(ray, dist)) 
             {
                 retval = result;
                 primitive = pr;
-                //TODO find another way
                 goto testloop;
                 
             }
@@ -403,14 +373,11 @@ int Raytracer::FindNearest(Ray& ray, float& dist, Primitive*& primitive)
 testloop:
     while (1)
     {
-        //list = grid[X + (Y << 3) + (Z << 6)];
         list = grid[X + Y * GRIDSIZE + Z * GRIDSIZE * GRIDSIZE];
         while (list)
         {
             Primitive* pr = list->GetPrimitive();
             int result;
-            //TODO WTF again
-            //if (pr->GetLastRayID() != a_Ray.GetID()) 
             if (result = pr->Intersect(ray, dist)) 
             {
                 primitive = pr;
@@ -465,10 +432,10 @@ RaytracerResult Raytracer::RenderRay(glm::vec3& screenPos, glm::vec4& color)
     // advance ray to scene bounding box boundary
     if (!e.Contains(camera->GetOrigin()))
     {
-        float bdist = INT_MAX;
+        float bdist = (float)INT_MAX;
         if (e.Intersect(r, bdist)) r.SetOrigin(camera->GetOrigin() + (bdist + EPSILON) * dir);
     }
-    float dist = INT_MAX;
+    float dist = (float)INT_MAX;
     return Raytrace(r, color, 1, dist, 1.0f);
 }
 
@@ -496,9 +463,7 @@ void Raytracer::applyFarFilter(glm::vec4& color, float distance, glm::vec4& srcC
     if (distance - scene.GetFarDistance() < 0.f)
         return;
 
-    //glm::vec4 farColor(.2f, .4f, .6f, 1.f);
-    //farColor += RAND(0.02f) - 0.01f;
-    float f = expf(-(distance - scene.GetFarDistance()) * 0.01);
+    float f = expf(-(distance - scene.GetFarDistance()) * 0.01f);
     color = f * color + (1 - f) * srcColor;
 
 }

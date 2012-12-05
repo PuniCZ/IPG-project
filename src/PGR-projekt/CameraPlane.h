@@ -17,7 +17,7 @@ public:
     void SetResolution(glm::vec2 resolution) 
     { 
         this->resolution = resolution; 
-        buffer = ScreenBuffer(resolution.x, resolution.y);
+        buffer = ScreenBuffer((int)resolution.x, (int)resolution.y);
     }
 
     float GetWidth() { return resolution.x; }

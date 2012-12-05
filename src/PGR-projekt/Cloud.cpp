@@ -1,7 +1,5 @@
 #include "Cloud.h"
 #include <time.h>
-#include <algorithm>
-#include <glm/gtx/vector_angle.hpp>
 
 Cloud::Cloud(glm::vec3 position, glm::vec3 size)
     :centerPosition(position), radius(std::max(std::max(size.x, size.y), size.z))
