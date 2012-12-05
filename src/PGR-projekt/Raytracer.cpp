@@ -238,7 +238,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                     
                     float factor = (float)depth / (TRACEDEPTH/2);
 
-                    glm::vec4 srcC = factor * glm::vec4(.4f, .4f, .4f, 1.f) + (1-factor)*glm::vec4(.2f, .4f, .6f, 1.f);
+                    glm::vec4 srcC = factor * glm::vec4(.5f, .5f, .5f, 1.f) + (1-factor)*glm::vec4(.2f, .4f, .6f, 1.f);
 
                     applyFarFilter(rcol, dist, srcC);
 

@@ -48,12 +48,17 @@ void Scene::Init()
     //primitives.back()->SetMaterial(Material(glm::vec4(.7f, .7f, 1.f, 1), 0.1f, 1.f));
 
     //light 1
-    primitives.push_back(new Sphere(glm::vec3(0, 15, 5), 0.1f));
-    primitives.back()->SetMaterial(Material(glm::vec4(.3f, .3f, .3f, 1)));
+    primitives.push_back(new Sphere(glm::vec3(0, -15, -5), 0.1f));
+    primitives.back()->SetMaterial(Material(glm::vec4(.6f, .6f, .6f, 1)));
     primitives.back()->SetLigth(true);
 
     //light 2
-    primitives.push_back(new Sphere(glm::vec3(2, 5, 1), 0.1f));
+    primitives.push_back(new Sphere(glm::vec3(0, -8, -6), 0.1f));
+    primitives.back()->SetMaterial(Material(glm::vec4(.99f, .39f, .0f, 1)));
+    primitives.back()->SetLigth(true);
+
+    //light 1
+    primitives.push_back(new Sphere(glm::vec3(0, -5, -5), 0.1f));
     primitives.back()->SetMaterial(Material(glm::vec4(.3f, .3f, .3f, 1)));
     primitives.back()->SetLigth(true);
 
