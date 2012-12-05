@@ -55,7 +55,7 @@ public:
         farDistance = dist;
     }
 
-    void Init();
+    void Init(int count);
     void BuildGrid();
 
 private:

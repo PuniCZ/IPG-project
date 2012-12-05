@@ -54,7 +54,7 @@ int main (int /*argc*/, char ** /*argv*/)
     Scene scene = Scene();
     scene.SetFogFactor(0.0f);
 
-    scene.Init();
+    scene.Init(10);
 
     Raytracer raytracer = Raytracer(&camera, scene);
     
@@ -78,10 +78,30 @@ int main (int /*argc*/, char ** /*argv*/)
                         scene.SetFogFactor((scene.GetFogFactor() > 0.f) ? 0.f : 0.2f);
                         break;
                     case SDLK_r:
-                        scene.Init();
+                        scene.Init(10);
                         raytracer.Init();
                         renderFinished = false;
                         break;
+					case SDLK_1:
+                        scene.Init(1);
+                        raytracer.Init();
+                        renderFinished = false;
+					case SDLK_2:
+                        scene.Init(5);
+                        raytracer.Init();
+                        renderFinished = false;
+					case SDLK_3:
+                        scene.Init(10);
+                        raytracer.Init();
+                        renderFinished = false;
+					case SDLK_4:
+                        scene.Init(15);
+                        raytracer.Init();
+                        renderFinished = false;
+					case SDLK_5:
+                        scene.Init(20);
+                        raytracer.Init();
+                        renderFinished = false;
                 }
             }
         }
