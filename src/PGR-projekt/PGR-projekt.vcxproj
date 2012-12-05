@@ -97,8 +97,6 @@
       <FileType>Document</FileType>
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="shaders\particle.fs" />
-    <None Include="shaders\particle.vs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tmp\lightmap.bmp" />

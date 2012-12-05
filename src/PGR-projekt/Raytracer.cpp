@@ -14,14 +14,20 @@ Raytracer::Raytracer(CameraPlane* camera, Scene& scene)
     screenDiffX = (screenX2 - screenX1) / camera->GetWidth();
     screenDiffY = (screenY2 - screenY1) / camera->GetHeight();
 
-    posY = screenY1;
-    curLine = 0;
+    Init();
 
     // precalculate 1 / size of a cell
     cellSizeRev = ((float)GRIDSIZE) / scene.GetBoundigBox().GetSize();
     // precalculate size of a cell
     cellSize = scene.GetBoundigBox().GetSize() * (1.0f / GRIDSIZE);
 
+}
+
+
+void Raytracer::Init()
+{
+    posY = screenY1;
+    curLine = 0;
 }
 
 
@@ -58,8 +64,12 @@ bool Raytracer::Render()
                 RenderRay(glm::vec3(posX - screenDiffX / 2.0f, posY - screenDiffY / 2.0f, 0), tmpColor);
                 color = tmpColor / 4;
             }
+            
+            float factor = 1.f - y / camera->GetHeight();
+            glm::vec4 srcC = factor * glm::vec4(.5f, .7f, .9f, 1.f) + (1-factor)*glm::vec4(.23f, .35f, .5f, 1.f);
 
-            applyFarFilter(color, hitResult.distance);
+
+            applyFarFilter(color, hitResult.distance, srcC);
             applyFog(color, hitResult.distance);
             color = glm::clamp(color, 0.f, 1.f);
             camera->GetBuffer()->SetPixel(x, y, color);
@@ -227,8 +237,12 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                     
                     // apply far filter and color mixing based on actual depht 
                     float factor = (float)depth / (TRACEDEPTH/2);
-                    glm::vec4 srcC = factor * glm::vec4(.7f, .7f, .7f, 1.f) + (1-factor)*glm::vec4(.2f, .4f, .6f, 1.f);
-                    applyFarFilter(rcol, dist, srcC);
+                    glm::vec4 srcC = factor * glm::vec4(.7f, .7f, .7f, 1.f) + (1-factor)*glm::vec4(.23f, .35f, .5f, 1.f);
+                    
+                    factor = 1.f - this->curLine / camera->GetHeight();
+                    glm::vec4 srcCC = factor * glm::vec4(.5f, .7f, .9f, 1.f) + (1-factor)*srcC;
+
+                    applyFarFilter(rcol, dist, srcCC);
                     
                     tmpColor += rcol * transparency;
                     reflectedObjects++;
@@ -251,7 +265,7 @@ int Raytracer::FindNearest(Ray& ray, float& dist, Primitive*& primitive)
     GridBox e = scene.GetBoundigBox();
     curpos = ray.GetOrigin();
     raydir = ray.GetDirection();
-    // setup 3DDDA (double check reusability of primary ray data)
+    // setup 3DDDA
     glm::vec3 cb, tmax, tdelta, cell;
     cell = (curpos - e.GetPos()) * cellSizeRev;
     int stepX, outX, X = (int)cell.x;
@@ -454,7 +468,7 @@ void Raytracer::applyFog(glm::vec4& color, float distance)
 
 void Raytracer::applyFarFilter(glm::vec4& color, float distance)
 {
-    applyFarFilter(color, distance, glm::vec4(.2f, .4f, .6f, 1.f));
+    applyFarFilter(color, distance, glm::vec4(.23f, .35f, .5f, 1.f));
 
 }
 

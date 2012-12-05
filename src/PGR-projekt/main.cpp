@@ -77,6 +77,11 @@ int main (int /*argc*/, char ** /*argv*/)
                     case SDLK_f:
                         scene.SetFogFactor((scene.GetFogFactor() > 0.f) ? 0.f : 0.2f);
                         break;
+                    case SDLK_r:
+                        scene.Init();
+                        raytracer.Init();
+                        renderFinished = false;
+                        break;
                 }
             }
         }
