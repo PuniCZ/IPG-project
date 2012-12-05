@@ -305,6 +305,10 @@ public:
 
 
 private:
+
+    float getTextureDensity(glm::vec3& pos);
+    int intersect(Ray& ray, float& dist);
+
     glm::vec3 position;
     float radius;
     float sqrRadius;

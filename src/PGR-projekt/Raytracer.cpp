@@ -123,13 +123,14 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
 
             glm::vec4 farColor(.2f, .4f, .6f, 1.f);
             //ambient color
-            tmpColor += (farColor) * .02f *  glm::clamp(- exp( (2-(float)depth)/5.f), -1.2f, 0.f);
+            //tmpColor += (farColor) * .02f *  glm::clamp(- exp( (2-(float)depth)/5.f), -1.2f, 0.f);
+            //tmpColor += glm::vec4(.2f);
 
             if(hitObject->GetTexture()->isEnabled())
             {
                 
-                //color = tmpColor;
-                //return RaytracerResult();
+                /*color = glm::vec4(1,0,0,1);;
+                return RaytracerResult();*/
             }
             //trace lights
             for (std::list<Primitive*>::iterator it = scene.GetLigths()->begin(); it != scene.GetLigths()->end(); it++)
@@ -235,9 +236,11 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                     glm::vec4 absorbance = hitObject->GetColor(pi, ray.GetOrigin()) * 0.25f;// * -dist;
                     transparency = glm::vec4(expf( absorbance.r ), expf( absorbance.g ), expf( absorbance.b ), 1);  
                     
+                    float factor = (float)depth / (TRACEDEPTH/2);
 
+                    glm::vec4 srcC = factor * glm::vec4(.4f, .4f, .4f, 1.f) + (1-factor)*glm::vec4(.2f, .4f, .6f, 1.f);
 
-                    applyFarFilter(rcol, dist);
+                    applyFarFilter(rcol, dist, srcC);
 
                     tmpColor += rcol * transparency;
 
@@ -471,13 +474,18 @@ void Raytracer::applyFog(glm::vec4& color, float distance)
 
 void Raytracer::applyFarFilter(glm::vec4& color, float distance)
 {
-    if (distance - scene.GetFarDistance() < 0.f)
-        return;
-
-    glm::vec4 farColor(.2f, .4f, .6f, 1.f);
-    //farColor += RAND(0.02f) - 0.01f;
-    float f = expf(-(distance - scene.GetFarDistance()) * 0.01);
-    color = f * color + (1 - f) * farColor;
+    applyFarFilter(color, distance, glm::vec4(.2f, .4f, .6f, 1.f));
 
 }
 
+void Raytracer::applyFarFilter(glm::vec4& color, float distance, glm::vec4& srcColor)
+{
+    if (distance - scene.GetFarDistance() < 0.f)
+        return;
+
+    //glm::vec4 farColor(.2f, .4f, .6f, 1.f);
+    //farColor += RAND(0.02f) - 0.01f;
+    float f = expf(-(distance - scene.GetFarDistance()) * 0.01);
+    color = f * color + (1 - f) * srcColor;
+
+}

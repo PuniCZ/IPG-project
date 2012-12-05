@@ -1,6 +1,6 @@
 #pragma once
 
-#define PARTICLES_IN_CLOUD 30
+#define PARTICLES_IN_CLOUD 60
 
 #define PARTICLE_STRUCT_SIZE 64
 

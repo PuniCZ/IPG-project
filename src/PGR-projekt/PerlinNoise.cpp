@@ -70,7 +70,7 @@ unsigned char *PerlinNoise::generate(int width, int height)
 
     unsigned char *nt = new unsigned char[width*height];
 
-    std::srand(time(NULL));
+    //std::srand(time(NULL));
     int r1 = std::rand() % RAND_MODULO;
     int r2 = std::rand() % RAND_MODULO;
 

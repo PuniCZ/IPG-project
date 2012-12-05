@@ -55,6 +55,50 @@ GridBox Plane::GetBoundingBox()
 
 int Sphere::Intersect(Ray& ray, float& dist)
 {
+    float d(dist);
+    int retval = INTERSECTION_RES_MISS;
+    if (intersect(ray, d))
+    {
+        glm::vec3 pi(ray.GetOrigin() + ray.GetDirection() * d);
+        float density = getTextureDensity(pi) * this->radius;
+        float newradius = density;
+
+        glm::vec3 v = ray.GetOrigin() - this->position;
+        float b = -glm::dot(v, ray.GetDirection());
+        float det = (b * b) - glm::dot(v, v) + newradius*newradius;
+        
+        if (det > 0)
+        {
+            det = sqrtf(det);
+            float i1 = b - det;
+            float i2 = b + det;
+            if (i2 > 0)
+            {
+                if (i1 < 0) 
+                {
+                    if (i2 < dist) 
+                    {
+                        dist = i2;
+                        retval = INTERSECTION_RES_HIT_INSIDE; //inside
+                    }
+                }
+                else
+                {
+                    if (i1 < dist)
+                    {
+                        dist = i1;
+                        retval = INTERSECTION_RES_HIT_OUTSIDE;
+                    }
+                }
+            }
+        }
+    }
+
+    return retval;
+}
+
+int Sphere::intersect(Ray& ray, float& dist)
+{
     glm::vec3 v = ray.GetOrigin() - this->position;
     float b = -glm::dot(v, ray.GetDirection());
     float det = (b * b) - glm::dot(v, v) + this->sqrRadius;
@@ -87,6 +131,42 @@ int Sphere::Intersect(Ray& ray, float& dist)
     return retval;
 }
 
+float Sphere::getTextureDensity(glm::vec3& pos)
+{
+    Texture *t=this->GetTexture();
+    if(!t->isEnabled())
+        return 1.f;
+    else
+    {
+        glm::vec3 pole(0, 1, 0);
+        glm::vec3 texPos(1, 0, 0);
+        float Vscale=2;
+        float Uscale=1;
+
+        glm::vec3 vp = (pos - this->position) * this->revRadius;
+        float phi = acosf( -glm::dot(vp, pole));
+
+        float u=phi * Vscale * (1.0f / PI), v = phi * Vscale * (1.0f / PI);
+        float theta = (acosf( glm::dot(texPos, vp ) / sinf(phi))) * (2.0f / PI);
+        if (glm::dot( glm::cross(pole, texPos), vp ) >= 0)
+            u = (1.0f - theta) * Uscale;
+        else
+            u = theta * Uscale;
+
+        unsigned char *texture=this->GetTexture()->getTexture();
+
+
+        int xx=((int)(u * t->getWidth()) + t->getWidth()/2)%t->getWidth();
+        int yy=((int)(v * t->getHeight()) + t->getHeight()/2)%t->getHeight();
+        if(xx<0)
+            xx*=-1;
+        if(yy<0)
+            yy*=-1;
+
+        return texture[(yy * t->getHeight() + xx)]/255.f;
+    }
+}
+
 glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
 {
     glm::vec4 retval(0);
@@ -98,13 +178,13 @@ glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
         //TODO: Use source vector in futere glm::degrees(acos(glm::dot(newViewPos, lastViewPos))) > ANGLE_DIFF_BETWEEN_PARTICLE_UPDATE;
         float mult = glm::clamp(-GetNormal(pos).z, 0.f, 1.f);
         mult = glm::clamp(exp(mult)-1.8f, 0.f, 1.f)*1.5f;
-        mult = glm::clamp(-pow(0.8f, mult)+1, 0.f, 1.f)*mult*5;
+        //mult = glm::clamp(-pow(0.8f, mult)+1, 0.f, 1.f)*mult*5;
 
         if (mult == 0.f)
             return retval;
 
-        glm::vec3 pole(0, 1, 0);
-        glm::vec3 texPos(1, 0, 0);
+        glm::vec3 pole(1, 0, 0);
+        glm::vec3 texPos(0, 1, 0);
         float Vscale=2;
         float Uscale=1;
 
@@ -130,7 +210,7 @@ glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
         float c = texture[(yy * t->getHeight() + xx)]/255.f;
         //std::cout << mult << "\n";
         //retval = glm::vec4(mult, 0,0,1);//(c * material.GetColor()) * mult;
-        retval = (c * material.GetColor()) * (mult);
+        retval = (c * material.GetColor())* (mult);
     }
     return retval;
 }
