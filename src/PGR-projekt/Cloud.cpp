@@ -27,6 +27,7 @@ void Cloud::CopyParticlesToScene(Scene& scene)
         spere->SetMaterial(Material(glm::vec4(.7f, .7f, .7f, 0.5f), 1.f, 0.0f, .8f, 1.f));
         spere->SetTexture(Texture(255,255,true));
         spere->GetTexture()->setSmoothNoise(false);
+        spere->GetTexture()->setZoom(150);
         spere->GetTexture()->generateTexture();
         scene.GetPrimitives()->push_back(spere);
     }

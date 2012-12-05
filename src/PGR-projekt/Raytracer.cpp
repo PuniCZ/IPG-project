@@ -69,16 +69,29 @@ bool Raytracer::Render()
 
             applyFarFilter(color, hitResult.distance);
             applyFog(color, hitResult.distance);
-            
-
             color = glm::clamp(color, 0.f, 1.f);
             camera->GetBuffer()->SetPixel(x, y, color);
             posX += screenDiffX;
         }
         posY += screenDiffY;
         curLine++;
+
+
+        /*for (int y = curLine; y < camera->GetHeight(); y++)
+        {
+            int size = 3;
+            for (int x = 0; x < camera->GetWidth(); x++)
+            {
+                for (int yy = y-size; yy <= y+size; yy++) for (int xx = x-size; xx <= x+size; xx++) 
+                {
+                    color += glm::vec4(camera->GetBuffer()->GetPixel(glm::clamp(xx, 0, (int)camera->GetWidth()), glm::clamp(yy, 0, (int)camera->GetHeight()))/(size*size*4.f), 1.f);
+                }
+            }
+        }*/
+
+
         return false;
-    }
+    }    
     return true;
 }
 
@@ -238,7 +251,7 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                     
                     float factor = (float)depth / (TRACEDEPTH/2);
 
-                    glm::vec4 srcC = factor * glm::vec4(.5f, .5f, .5f, 1.f) + (1-factor)*glm::vec4(.2f, .4f, .6f, 1.f);
+                    glm::vec4 srcC = factor * glm::vec4(.7f, .7f, .7f, 1.f) + (1-factor)*glm::vec4(.2f, .4f, .6f, 1.f);
 
                     applyFarFilter(rcol, dist, srcC);
 

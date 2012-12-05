@@ -24,13 +24,13 @@ class CloudParticle
         CloudParticle(glm::vec3 pos, glm::vec3 size)
             :baseColor(.2f, .2f, .2f, .5f), position(pos)
         {
-            float particleSize = std::max(std::max(size.x,size.y),size.z)/3.5f;
+            float particleSize = std::max(std::max(size.x,size.y),size.z)/1.5f;
 
-            radius = particleSize*2+abs(Utils::Gaussrand(particleSize, particleSize));
+            radius = .3f+abs(Utils::Gaussrand(particleSize, particleSize));
             
-            position.x += Utils::Gaussrand(size.x, size.x*3);
-            position.y += Utils::Gaussrand(size.y, size.y*3);
-            position.z += Utils::Gaussrand(size.z, size.z*3);                        
+            position.x += Utils::Gaussrand(size.x, size.x*2);
+            position.y += Utils::Gaussrand(size.y, size.y*2);
+            position.z += Utils::Gaussrand(size.z, size.z*2);
         }
 
         ~CloudParticle(void) { };
