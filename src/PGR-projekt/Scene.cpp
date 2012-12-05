@@ -88,6 +88,7 @@ void Scene::Init(int count)
     primitives.back()->SetLigth(true);*/
     
 	Sky sky(count);
+
     sky.CopySkyToScene(*this);
     
     /*Cloud cld(glm::vec3(2, 2, 5), glm::vec3(1.5f,1.f,0.3f));
@@ -116,7 +117,7 @@ void Scene::BuildGrid()
     memset(grid, 0, GRIDSIZE * GRIDSIZE * GRIDSIZE * sizeof(std::list<Primitive*>*));
     //glm::vec3 p1(-14, -5, -6), p2( 14, 8, 30 ); //TODO: World boundaries
 
-    glm::vec3 p1(-30, -20, -20), p2( 30, 30, 20 ); //TODO: World boundaries
+    glm::vec3 p1(-30, -30, -30), p2( 30, 30, 30 ); //TODO: World boundaries
 
     // calculate cell width, height and depth
     float dx = (p2.x - p1.x) / GRIDSIZE, dx_reci = 1.0f / dx;
@@ -162,4 +163,3 @@ void Scene::BuildGrid()
         }
     }
 }
-

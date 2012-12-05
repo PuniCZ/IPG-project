@@ -1,9 +1,10 @@
 #include "Sky.h"
+#include <iostream>
+using namespace std;
+#include <windows.h>
 
 Sky::Sky(int numOfClouds)
 {
-
-    //srand((unsigned int)time(NULL));
     for (int i = 0; i < numOfClouds; i++)
     {
         /***************************************
@@ -16,21 +17,21 @@ Sky::Sky(int numOfClouds)
         * 30   -28 - 28   12 - 16
         ****************************/
         // TODO:PREDELAT
-        /*float zPos=17.5f+Utils::Gaussrand(8.0f, 12.5f);
-        float xPos=Utils::Gaussrand(4.0f + (0.4f * zPos), 8.f + (0.3f * zPos));
-        float yPos=zPos*0.4f + fabs(Utils::Gaussrand(3.f, 4.f));*/
-       
-        /*float zPos=12.5f+Utils::Gaussrand(5.0f, 10.f);
-        float xPos=Utils::Gaussrand(4.0f + (0.4f * zPos), 8.f + (0.3f * zPos));
-        float yPos=2.0f+Utils::Gaussrand(1.5f, 4.f);*/
-        //srand((unsigned int)time(NULL));
-        float zPos=5.f+RAND(25.f);
-        float xPos=(-15.f)+RAND(30.f);//-(8.f + (0.6f * zPos))+RAND(8.f + (1.2f * zPos));
-        float yPos=0.f+(0.4f*zPos)+RAND(4.f);
-
-
+        //double zPos=(rand()%5)*5+5;
         //double xPos=(rand()%(4*int(zPos/5)+4)*2)-20;
         //double yPos=(rand()%5)+int(zPos/5)*2;
+
+        /*float zPos=1;
+        float xPos=1;
+        float yPos=1;
+        */
+        Sleep(500);
+        float zPos=10.5f + Utils::Gaussrand(8.f,10.5f)+5; //5 -30
+        //float zPos=(rand()%5)*5+5;
+        float xPos=Utils::Gaussrand(4.f+(0.8f*zPos),4.f + (0.8f*zPos));
+        float yPos=fabs(Utils::Gaussrand(3.f,4.f))+zPos*0.4f;
+        cout<<zPos<<" "<<xPos<<" "<<yPos<<endl;
+
         //double xPos = rand()%30-15, yPos = rand()%-15, zPos  = rand()%20+5;
         double xSize = 1.5f, ySize=0.5f, zSize=0.2f;
 
