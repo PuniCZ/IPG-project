@@ -27,8 +27,8 @@ double PerlinNoise::interpolate(double a, double b, double x)
 
 double PerlinNoise::noise(double x,double y)
 {
-    double modifiedX=(double)((int)x);
-    double modifiedY=(double)((int)y);
+    double modifiedX=floor(x);
+    double modifiedY=floor(y);
 
     double s,t,u,v;
     
@@ -46,10 +46,10 @@ double PerlinNoise::noise(double x,double y)
         u = getNoise(modifiedX,   modifiedY+1);
         v = getNoise(modifiedX+1, modifiedY+1);
     }
-    double int1 = interpolate(s, t, x-modifiedX);//Interpolate between the values.
-    double int2 = interpolate(u, v, x-modifiedX);//Here we use x-floorx, to get 1st dimension. Don't mind the x-floorx thingie, it's part of the cosine formula.
+    double int1 = interpolate(s, t, x-modifiedX);
+    double int2 = interpolate(u, v, x-modifiedX);
     
-    return interpolate(int1, int2, y-modifiedY);//Here we use y-floory, to get the 2nd dimension.
+    return interpolate(int1, int2, y-modifiedY);
 }
 
 int PerlinNoise::cloudExpCurve(int v)
