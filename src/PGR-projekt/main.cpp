@@ -54,7 +54,7 @@ int main (int /*argc*/, char ** /*argv*/)
     Scene scene = Scene();
     scene.SetFogFactor(0.0f);
 
-    scene.Init();
+    scene.Init(0);
 
     Raytracer raytracer = Raytracer(&camera, scene);
     
@@ -78,10 +78,40 @@ int main (int /*argc*/, char ** /*argv*/)
                         scene.SetFogFactor((scene.GetFogFactor() > 0.f) ? 0.f : 0.2f);
                         break;
                     case SDLK_r:
-                        scene.Init();
+                        scene.Init(10);
                         raytracer.Init();
                         renderFinished = false;
                         break;
+					case SDLK_1:
+						printf("1-Mrak\n");
+                        scene.Init(1);
+                        raytracer.Init();
+                        renderFinished = false;
+						break;
+					case SDLK_2:
+						printf("5-Mraku\n");
+                        scene.Init(5);
+                        raytracer.Init();
+                        renderFinished = false;
+						break;
+					case SDLK_3:
+						printf("10-Mraku\n");
+                        scene.Init(10);
+                        raytracer.Init();
+                        renderFinished = false;
+						break;
+					case SDLK_4:
+						printf("20-Mraku\n");
+                        scene.Init(20);
+                        raytracer.Init();
+                        renderFinished = false;
+						break;
+					case SDLK_5:
+						printf("100-Mraku\n");
+                        scene.Init(100);
+                        raytracer.Init();
+                        renderFinished = false;
+						break;
                 }
             }
         }

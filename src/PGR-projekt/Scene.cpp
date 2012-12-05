@@ -9,10 +9,9 @@ Scene::~Scene(void)
         delete primitives.back();
         primitives.pop_back();
     }
-
 }
 
-void Scene::Init()
+void Scene::Init(int count)
 {
 
     primitives.clear();
@@ -88,7 +87,8 @@ void Scene::Init()
     primitives.back()->SetMaterial(Material(glm::vec4(.3f, .3f, .3f, 1)));
     primitives.back()->SetLigth(true);*/
     
-    Sky sky(5);
+	Sky sky(count);
+
     sky.CopySkyToScene(*this);
     
     /*Cloud cld(glm::vec3(2, 2, 5), glm::vec3(1.5f,1.f,0.3f));
