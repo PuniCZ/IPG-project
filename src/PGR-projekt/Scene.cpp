@@ -13,7 +13,7 @@ Scene::~Scene(void)
 
 void Scene::Init(int count)
 {
-
+    printf("Generuji scenu...\n");
     primitives.clear();
 
     #pragma region oldScene
@@ -89,6 +89,7 @@ void Scene::Init(int count)
     
 	Sky sky(count);
 
+    printf("Generuji textury...\n");
     sky.CopySkyToScene(*this);
     
     /*Cloud cld(glm::vec3(2, 2, 5), glm::vec3(1.5f,1.f,0.3f));

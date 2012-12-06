@@ -11,6 +11,8 @@ Sky::Sky(int numOfClouds)
 
     for (int i = 0; i < numOfClouds; i++)
     {
+        printf("Generuji mrak %d...\n", i);
+
         //Viditelne souradnice pro prislusne Z
         /***************************************
         * Z       X         Y
@@ -22,8 +24,8 @@ Sky::Sky(int numOfClouds)
         ****************************/
 
         float zPos=10.5f + Gaussrand(8.f,10.5f)+5;
-        float xPos=Gaussrand(4.f+(0.8f*zPos),4.f + (0.8f*zPos));
-        float yPos=fabs(Gaussrand(3.f,4.f))+zPos*0.4f;
+        float xPos=Gaussrand(3.f+(0.8f*zPos),4.f + (0.8f*zPos));
+        float yPos=fabs(Gaussrand(3.f,4.f))+zPos*0.2f - 2.f;
         
         float xSizeMult=0.5+Random();
         float ySizeMult=0.7+Random();

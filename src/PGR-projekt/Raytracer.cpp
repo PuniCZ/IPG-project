@@ -28,6 +28,7 @@ void Raytracer::Init()
 {
     posY = screenY1;
     curLine = 0;
+    printf("Renderuji scenu...\n");
 }
 
 
