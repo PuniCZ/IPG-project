@@ -54,7 +54,7 @@ int main (int /*argc*/, char ** /*argv*/)
     Scene scene = Scene();
     scene.SetFogFactor(0.0f);
 
-    scene.Init(0);
+    scene.Init(5);
 
     Raytracer raytracer = Raytracer(&camera, scene);
     
@@ -76,6 +76,8 @@ int main (int /*argc*/, char ** /*argv*/)
                 {
                     case SDLK_f:
                         scene.SetFogFactor((scene.GetFogFactor() > 0.f) ? 0.f : 0.2f);
+                        raytracer.Init();
+                        renderFinished = false;
                         break;
 					case SDLK_1:
 						printf("1-Mrak\n");
