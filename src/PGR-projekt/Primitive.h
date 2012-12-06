@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm\glm.hpp>
+#include "glm/glm.hpp"
 #include "Ray.h"
 #include "Utils.h"
 #include "Defines.h"
@@ -81,7 +81,7 @@ public:
         : size(0.f), position(0.f)
     { }
 
-    GridBox(glm::vec3& position, glm::vec3& size) 
+    GridBox(glm::vec3 position, glm::vec3 size) 
         : size(size), position(position)
     { }
 
@@ -214,7 +214,7 @@ public:
         this->texture = tex;
     }
 
-    virtual glm::vec4 GetColor(glm::vec3& pos, glm::vec3& origin)
+    virtual glm::vec4 GetColor(glm::vec3& pos, glm::vec3 origin)
     {
         return material.GetColor();
     }
@@ -297,7 +297,7 @@ public:
         return glm::normalize((dir - this->position) * this->revRadius); 
     }
 
-    glm::vec4 GetColor(glm::vec3& pos, glm::vec3& origin);
+    glm::vec4 GetColor(glm::vec3& pos, glm::vec3 origin);
 
     int Intersect(Ray& ray, float& dist);
     bool IntersectBox(GridBox& box);
