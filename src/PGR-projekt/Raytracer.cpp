@@ -238,9 +238,16 @@ RaytracerResult Raytracer::Raytrace(Ray& ray, glm::vec4&color, int depth, float&
                     
                     // apply far filter and color mixing based on actual depht 
                     float factor = (float)depth / (TRACEDEPTH/2);
+
+                    if (scene.GetFogFactor() > 0.f)
+                        factor = 0.f;
+
                     glm::vec4 srcC = factor * glm::vec4(.7f, .7f, .7f, 1.f) + (1-factor)*glm::vec4(.23f, .35f, .5f, 1.f);
                     
                     factor = 1.f - this->curLine / camera->GetHeight();
+
+                    if (scene.GetFogFactor() > 0.f)
+                        factor = 0.f;
                     glm::vec4 srcCC = factor * glm::vec4(.5f, .7f, .9f, 1.f) + (1-factor)*srcC;
 
                     applyFarFilter(rcol, dist, srcCC);
