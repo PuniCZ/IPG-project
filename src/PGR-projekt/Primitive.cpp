@@ -49,7 +49,9 @@ bool Plane::IntersectBox(GridBox& box)
 
 GridBox Plane::GetBoundingBox()
 {
-    return GridBox(glm::vec3(-10000), glm::vec3(20000));
+    glm::vec3 pos(-10000);
+    glm::vec3 size(20000);
+    return GridBox(pos, size);
 }
 
 
@@ -167,7 +169,7 @@ float Sphere::getTextureDensity(glm::vec3& pos)
     }
 }
 
-glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
+glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3 origin)
 {
     glm::vec4 retval(0);
     Texture *t=this->GetTexture();
@@ -177,7 +179,7 @@ glm::vec4 Sphere::GetColor(glm::vec3& pos, glm::vec3& origin)
     {
         //TODO: Use source vector in futere glm::degrees(acos(glm::dot(newViewPos, lastViewPos))) > ANGLE_DIFF_BETWEEN_PARTICLE_UPDATE;
         float mult = glm::clamp(-GetNormal(pos).z, 0.f, 1.f);
-        mult = glm::clamp(exp(mult)-1.8f, 0.f, 1.f)*1.5f;
+        mult = glm::clamp((float)exp(mult)-1.8f, 0.f, 1.f)*1.5f;
         //mult = glm::clamp(-pow(0.8f, mult)+1, 0.f, 1.f)*mult*5;
 
         if (mult == 0.f)
@@ -250,7 +252,9 @@ bool Sphere::IntersectBox(GridBox& box)
 
 GridBox Sphere::GetBoundingBox()
 {
-    return GridBox(position - glm::vec3(radius), glm::vec3(radius) * 2.f);
+    glm::vec3 pos(position - glm::vec3(radius));
+    glm::vec3 size(glm::vec3(radius) * 2.f);
+    return GridBox(pos, size);
 }
 
 
@@ -346,7 +350,9 @@ bool Particle::IntersectBox(GridBox& box)
 GridBox Particle::GetBoundingBox()
 {
     //using sphere aproximation
-    return GridBox(position - glm::vec3(radius), glm::vec3(radius) * 2.f);
+    glm::vec3 pos(position - glm::vec3(radius));
+    glm::vec3 size(glm::vec3(radius) * 2.f);
+    return GridBox(pos, size);
 }
 
 
