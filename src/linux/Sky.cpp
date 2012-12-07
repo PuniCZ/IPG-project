@@ -54,13 +54,13 @@ float Sky::Gaussrand(float deviation, float clamp)
 
     if(phase == 0) {
         do {
-            float U1 = ((float)Random()-1.f)/ RAND_MAX;
-            float U2 = ((float)Random()-1.f)/ RAND_MAX;
+            float U1 = (float)Random();
+            float U2 = (float)Random();
 
             V1 = 2 * U1 - 1;
             V2 = 2 * U2 - 1;
             S = V1 * V1 + V2 * V2;
-std::cout <<S <<"\n";
+
             } while(S >= 1 || S == 0);
 
         X = V1 * sqrt(-2 * log(S) / S);
