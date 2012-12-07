@@ -1,11 +1,11 @@
 #include "Sky.h"
 #include "Utils.h"
-
 using namespace std;
 
 
 Sky::Sky(int numOfClouds)
 {
+
     srand(time(0));
     ix=(unsigned long) rand();
 
@@ -54,8 +54,8 @@ float Sky::Gaussrand(float deviation, float clamp)
 
     if(phase == 0) {
         do {
-            float U1 = (float)Random()*12453 / RAND_MAX;
-            float U2 = (float)Random()*35123 / RAND_MAX;
+            float U1 = (float)Random();
+            float U2 = (float)Random();
 
             V1 = 2 * U1 - 1;
             V2 = 2 * U2 - 1;
