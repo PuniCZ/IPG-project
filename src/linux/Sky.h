@@ -11,9 +11,9 @@ public:
 protected:
     std::vector<Cloud> clouds;
     int cloudsNumber;
-    float Gaussrand(float deviation, float clamp);
-    float Random(void);
-    unsigned long ix;
+    //static float Gaussrand(float deviation, float clamp);
+    //float Random(void);
+    //unsigned long ix;
 };
 
 

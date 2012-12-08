@@ -11,7 +11,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
 run:
-	./prg-sky	
+	./$(EXECUTABLE)	
 
 .PHONY: clean clean-exe clean-all
 clean:

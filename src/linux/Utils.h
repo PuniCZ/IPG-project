@@ -11,7 +11,8 @@ class Utils
     public:
 
         static float Gaussrand(float deviation, float clamp);
-        
+        static float Random(void);
+        static unsigned long ix;
 };
 
 

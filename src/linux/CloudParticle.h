@@ -15,8 +15,7 @@ class CloudParticle
         {
             float particleSize = std::max(std::max(size.x,size.y),size.z)/1.5f;
 
-            radius = .3f+abs(Utils::Gaussrand(particleSize, particleSize));
-            
+            radius = .3f+abs(Utils::Gaussrand(particleSize+.5f, particleSize+1.f));
             position.x += Utils::Gaussrand(size.x, size.x*2);
             position.y += Utils::Gaussrand(size.y, size.y*2);
             position.z += Utils::Gaussrand(size.z, size.z*2);
