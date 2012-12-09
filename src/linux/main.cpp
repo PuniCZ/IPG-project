@@ -82,21 +82,21 @@ int main (int /*argc*/, char ** /*argv*/)
                         renderFinished = false;
                         break;
                     case SDLK_UP:
-                        cloudsCount += 5;
+                        cloudsCount += 1;
 			printf("Pocet mraku: %d\n", cloudsCount);
-                        scene.Init(cloudsCount);
-                        raytracer.Init();
-                        renderFinished = false;
                         break;
                     case SDLK_DOWN:
-                        cloudsCount -= 5;
+                        cloudsCount -= 1;
                         if (cloudsCount < 0)
                             cloudsCount = 0;
 			printf("Pocet mraku: %d\n", cloudsCount);
+                        break;
+		    case SDLK_RETURN: //ENTER
+		    case SDLK_KP_ENTER: //Enter NumPad
                         scene.Init(cloudsCount);
                         raytracer.Init();
                         renderFinished = false;
-                        break;
+			break;
                 }
             }
         }
